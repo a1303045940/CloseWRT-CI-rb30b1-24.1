@@ -1,36 +1,83 @@
-# This is a basic workflow to help you get started with Actions
+#CI项目
+name: RB30B1-6.6
 
-name: CI
-
-# Controls when the workflow will run
+#CI计划
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+  #自动编译：早上6点
+  schedule:
+    - cron: 0 20 * * *
+  #手动编译
   workflow_dispatch:
+    inputs:
+      PACKAGE:
+        description: '手动调整插件包，多个请用\n符号隔开。'
+        required: false
+        type: string
+      TEST:
+        description: '仅输出配置文件，不编译固件。'
+        default: 'false'
+        required: false
+        type: boolean
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+
+#CI权限
+permissions: write-all
+
+#CI任务
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  cleanup:
+    runs-on: ubuntu-22.04
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Delete old Releases and Workflows
+        uses: ophub/delete-releases-workflows@main
+        with:
+          gh_token: ${{secrets.GH_TOKEN}}
+          delete_releases: true
+          releases_keep_latest: 0
+          delete_tags: true
+          delete_workflows: true
+          workflows_keep_day: 0
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+  config:
+    needs: cleanup
+    name: ${{matrix.CONFIG}}
+    strategy:
+      fail-fast: false
+      #max-parallel: 4
+      matrix:
+        CONFIG: [MT7981]
+        REPO_INFO:
+          #- {SOURCE: "padavanonly/immortalwrt-mt798x-24.10", BRANCH: "2410"}
+          - {SOURCE: "padavanonly/immortalwrt-mt798x-6.6", BRANCH: "openwrt-24.10-6.6"}
+          #- {SOURCE: "dailook/immortalwrt-mt798x-23.05", BRANCH: "openwrt-23.05"}
+          #- {SOURCE: "NekokeCore/immortalwrt-mt798x-24.10", BRANCH: "openwrt-24.10"}
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    #调用公用编译核心WRT-CORE.yml
+    uses: ./.github/workflows/WRT-CORE.yml
+    with:
+      #编译配置
+      WRT_CONFIG: ${{matrix.CONFIG}}
+      #默认主题
+      WRT_THEME: argon
+      #默认主机名
+      WRT_NAME: Openwrt
+      #默认WIFI名称
+      WRT_SSID: Openwrt
+      #默认WIFI密码
+      WRT_WORD: passsword
+      #默认地址
+      WRT_IP: 192.168.6.1
+      #默认密码，仅作提示，修改无用
+      WRT_PW: password
+      #源码链接
+      WRT_REPO: https://github.com/${{matrix.REPO_INFO.SOURCE}}.git
+      #源码分支
+      WRT_BRANCH: ${{matrix.REPO_INFO.BRANCH}}
+      #源码名称
+      WRT_SOURCE: ${{matrix.REPO_INFO.SOURCE}}
+      #插件调整
+      WRT_PACKAGE: ${{inputs.PACKAGE}}
+      #仅输出配置文件
+      WRT_TEST: ${{inputs.TEST}}
