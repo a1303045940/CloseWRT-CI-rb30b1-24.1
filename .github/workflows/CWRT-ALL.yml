@@ -20,7 +20,7 @@ on:
         type: boolean
 
 env:
-  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
 
 #CI权限
 permissions: write-all
