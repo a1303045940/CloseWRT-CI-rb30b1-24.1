@@ -41,3 +41,5 @@ sed -i '/luci-app-mtk/d' ./.config
 sed -i '/luci-app-upnp/d' ./.config
 sed -i '/luci-app-wol/d' ./.config
 sed -i '/wifi-profile/d' ./.config
+#修复Rust编译失败
+sed -i 's/ci-llvm=true/ci-llvm=false/g' feeds/packages/lang/rust/Makefile
