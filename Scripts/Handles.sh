@@ -47,16 +47,20 @@ if [ -f "$TS_FILE" ]; then
 fi
 
 #修复Rust编译失败Add commentMore actions
-#RUST_FILE=$(find ../feeds/packages/ -maxdepth 3 -type f -wholename "*/rust/Makefile")
-#if [ -f "$RUST_FILE" ]; then
+#修复状态灯
+#LED_FILE="./target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq6000-re-ss-01.dts"
+#DTS_FILE="./files/ipq6000-re-ss-01.dts"
+#if [ -f "$LED_FILE" ]; then
 #	echo " "
-
-#	sed -i 's/ci-llvm=true/ci-llvm=false/g' $RUST_FILE
-
-#	cd $PKG_PATH && echo "rust has been fixed!"
+# 
+#    cp -f "$DTS_FILE" "$LED_FILE"
+#
+#	echo "状态灯修复完成!"
+#else
+#    echo "状态灯修复失败" 
 #fi
 
-# Set Rust build arg llvm.download-ci-llvm to false.
+# Set Rust build arg llvm.download-ci-llvm to false.#修复Rust编译失败Add commentMore actions
 RUST_MAKEFILE="feeds/packages/lang/rust/Makefile"
 if [[ -f "${RUST_MAKEFILE}" ]]; then
   sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' "${RUST_MAKEFILE}"
