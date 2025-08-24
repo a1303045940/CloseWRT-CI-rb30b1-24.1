@@ -55,12 +55,11 @@ if [ -f "$RUST_FILE" ]; then
 
 	cd $PKG_PATH && echo "rust has been fixed!"
 fi
-#修复Rust编译失败
-#RUST_FILE=$(find ../feeds/packages/ -maxdepth 3 -type f -wholename "*/rust/Makefile")
-#if [ -f "$RUST_FILE" ]; then
-#	echo " "
 
-#	sed -i 's/ci-llvm=true/ci-llvm=false/g' $RUST_FILE
-
-#	cd $PKG_PATH && echo "rust has been fixed!"
-#fi
+# Set Rust build arg llvm.download-ci-llvm to false.
+RUST_MAKEFILE="feeds/packages/lang/rust/Makefile"
+if [[ -f "${RUST_MAKEFILE}" ]]; then
+  sed -i 's/--set=llvm\.download-ci-llvm=true/--set=llvm.download-ci-llvm=false/' "${RUST_MAKEFILE}"
+else
+  echo "File ${RUST_MAKEFILE} does not exist." >&2
+fi
