@@ -7,6 +7,9 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-m
 #添加编译日期标识
 sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
 
+# Add the default password for the 'root' user（Change the empty password to 'password'）
+sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
+
 WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 #修改WIFI名称
 sed -i "s/ImmortalWrt/$WRT_SSID/g" $WIFI_FILE
