@@ -1,27 +1,22 @@
-name: Sync luci-app-npc to Target Repo
+name: Sync NPC Directory
 
 on:
   workflow_dispatch:    # 支持手动触发
   #schedule:
-  #  - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
+   # - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
 
 jobs:
   sync-npc:
     runs-on: ubuntu-latest
-    env:
-      TARGET_REPO: "a1303045940/package"
-      TARGET_DIR: "luci-app-npc"  # 对应的目标目录路径
-      COMMIT_HASH: "3cbc43ba94a0f414d34273a207e0c41a2d1d391b"  # 源仓库特定提交
-    
     steps:
       # 步骤 1：检出目标仓库
       - name: Checkout Target Repo
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.TARGET_REPO }}
+          repository: a1303045940/package
           token: ${{ secrets.GH_TOKEN }}
           path: target-repo
-          ref: main  # 明确指定目标分支
+          ref: main  # 明确指定分支
 
       # 步骤 2：获取源目录内容
       - name: Fetch Source Directory
@@ -31,33 +26,28 @@ jobs:
           git init
           git remote add origin https://github.com/sqshanbing/small-package.git
           git config core.sparseCheckout true
-          echo "${{ env.TARGET_DIR }}/" >> .git/info/sparse-checkout
-          git pull --depth=1 origin ${{ env.COMMIT_HASH }}
-          
-          # 验证源目录存在性
-          if [ ! -d "${{ env.TARGET_DIR }}" ]; then
-            echo "❌ 错误：源目录 ${{ env.TARGET_DIR }} 不存在"
-            exit 1
-          fi
+          echo "luci-app-npc/" >> .git/info/sparse-checkout
+          git pull --depth=1 origin 3cbc43ba94a0f414d34273a207e0c41a2d1d391b
 
-      # 步骤 3：精确复制文件到目标目录
+      # 步骤 3：精确复制文件（关键修改）
       - name: Copy Files to Target
         run: |
-          SOURCE="source-files/${{ env.TARGET_DIR }}"
-          TARGET="target-repo/${{ env.TARGET_DIR }}"
+          SOURCE="source-files/luci-app-npc"
+          TARGET="target-repo/luci-app-npc"
           
+          # === 修改点1：简化目录操作 ===
           echo "=== 清理目标目录 ==="
-          rm -rf "$TARGET"  # 完全删除旧目录
-          
-          echo "=== 复制文件到目标仓库 ==="
+          rm -rf "$TARGET"
           mkdir -p "$TARGET"
-          rsync -av --progress "$SOURCE/" "$TARGET/"
           
-          echo "✅ 文件已复制到：https://github.com/${{ env.TARGET_REPO }}/tree/main/${{ env.TARGET_DIR }}"
-          echo "=== 目录结构验证 ==="
-          tree "$TARGET" || ls -lR "$TARGET"
+          echo "=== 复制文件内容 ==="
+          # 修改点2：直接复制内容而非目录本身
+          cp -r "$SOURCE"/* "$TARGET"/
+          
+          echo "=== 验证文件 ==="
+          ls -l "$TARGET"  # 仅显示目标目录内容
 
-      # 步骤 4：提交并推送更改
+      # 步骤 4：提交并推送（简化输出）
       - name: Commit & Push Changes
         run: |
           cd target-repo
@@ -65,10 +55,10 @@ jobs:
           git config user.email "1303045940@qq.com"
           
           if [ -n "$(git status --porcelain)" ]; then
-            git add "${{ env.TARGET_DIR }}"
-            git commit -m "chore: Update ${{ env.TARGET_DIR }} from source $(date +'%Y%m%d-%H%M%S')"
+            git add luci-app-npc  # 修改点3：精确添加目录
+            git commit -m "chore: Update luci-app-npc from source"
             git push
-            echo "✅ 更新已推送到：https://github.com/${{ env.TARGET_REPO }}/tree/main/${{ env.TARGET_DIR }}"
+            echo "✅ 更新成功：luci-app-npc目录已同步"  # 修改点4：简化成功消息
           else
             echo "ℹ️ 无文件变更，跳过提交"
           fi
