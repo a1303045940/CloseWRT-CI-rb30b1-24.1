@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Target Repo
         uses: actions/checkout@v4
         with:
-          repository: a1303045940/
+          repository: a1303045940/packages
           token: ${{ secrets.GH_TOKEN }}
           path: target-repo
 
