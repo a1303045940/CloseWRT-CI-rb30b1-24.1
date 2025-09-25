@@ -61,6 +61,7 @@ UPDATE_PACKAGE "quickstart" "kenzok8/small-package" "main" "pkg"
 UPDATE_PACKAGE "luci-app-quickstart" "kenzok8/small-package" "main" "pkg"
 UPDATE_PACKAGE "luci-app-istorex" "kenzok8/small-package" "main" "pkg"
 
+UPDATE_PACKAGE "nps" "sqshanbing/small-package/tree/3cbc43ba94a0f414d34273a207e0c41a2d1d391b/luci-app-npc" "main" "pkg"
 #UPDATE_PACKAGE "alist" "sbwml/luci-app-alist" "main"
 #UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
