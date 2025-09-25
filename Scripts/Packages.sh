@@ -121,6 +121,7 @@ UPDATE_VERSION "sing-box"
 # 若构建openclash 则添加内核
 
 echo "✅ 已选择 luci-app-openclash，添加 openclash core"
+echo "$PACKAGES"
 mkdir -p files/etc/openclash/core
 # Download clash_meta
 META_URL="https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz"
