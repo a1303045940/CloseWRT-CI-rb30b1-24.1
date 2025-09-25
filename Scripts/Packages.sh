@@ -56,7 +56,8 @@ UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
 
 #UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
 
-UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "pkg"
+#UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "pkg"
+UPDATE_PACKAGE "luci-app-istore" "linkease/istore" "main"
 UPDATE_PACKAGE "quickstart" "kenzok8/small-package" "main" "pkg"
 UPDATE_PACKAGE "istorex" "kenzok8/small-package" "main" "pkg"
 
