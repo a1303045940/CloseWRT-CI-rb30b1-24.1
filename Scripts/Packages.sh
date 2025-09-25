@@ -119,7 +119,7 @@ UPDATE_VERSION() {
 UPDATE_VERSION "sing-box"
 
 # 若构建openclash 则添加内核
-if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
+if echo "$PKG_BRANCH" | grep -q "luci-app-openclash"; then
     echo "✅ 已选择 luci-app-openclash，添加 openclash core"
     mkdir -p files/etc/openclash/core
     # Download clash_meta
