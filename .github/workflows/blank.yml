@@ -1,24 +1,48 @@
-name: Sync NPC Directory
+name: Create and Sync NPc Repository
 
 on:
   workflow_dispatch:    # 支持手动触发
-  #schedule:
-   # - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
+  # schedule:
+  #  - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
 
 jobs:
-  sync-npc:
+  create-repo-and-sync:
     runs-on: ubuntu-latest
     steps:
-      # 步骤 1：检出目标仓库
-      - name: Checkout Target Repo
+      # 步骤 1：安装 GitHub CLI
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      # 步骤 2：创建新仓库
+      - name: Create New Repository
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          # 检查仓库是否已存在
+          if gh repo view a1303045940/luci-app-npc >/dev/null 2>&1; then
+            echo "ℹ️ 仓库已存在，跳过创建"
+          else
+            echo "=== 创建新仓库 ==="
+            gh repo create a1303045940/luci-app-npc --public --confirm
+            echo "✅ 新仓库已创建：https://github.com/a1303045940/luci-app-npc"
+          fi
+
+      # 步骤 3：检出新创建的仓库
+      - name: Checkout New Repository
         uses: actions/checkout@v4
         with:
-          repository: a1303045940/package
+          repository: a1303045940/luci-app-npc
           token: ${{ secrets.GH_TOKEN }}
-          path: target-repo
-          ref: main  # 明确指定分支
+          path: new-repo
+          fetch-depth: 1  # 仅获取最新提交
 
-      # 步骤 2：获取源目录内容
+      # 步骤 4：获取源目录内容
       - name: Fetch Source Directory
         run: |
           mkdir -p source-files
@@ -26,39 +50,47 @@ jobs:
           git init
           git remote add origin https://github.com/sqshanbing/small-package.git
           git config core.sparseCheckout true
-          echo "luci-app-npc/" >> .git/info/sparse-checkout
+          echo "luci-app-npc/*" >> .git/info/sparse-checkout  # 获取目录下所有内容
           git pull --depth=1 origin 3cbc43ba94a0f414d34273a207e0c41a2d1d391b
+          
+          # 验证源目录
+          if [ ! -d "luci-app-npc" ]; then
+            echo "❌ 错误：源目录 luci-app-npc 不存在"
+            exit 1
+          fi
 
-      # 步骤 3：精确复制文件（关键修改）
-      - name: Copy Files to Target
+      # 步骤 5：复制文件到新仓库（仅目录内容）
+      - name: Copy Files to New Repository
         run: |
-          SOURCE="source-files/luci-app-npc"
-          TARGET="target-repo/luci-app-npc"
+          SOURCE_DIR="source-files/luci-app-npc"
+          TARGET_DIR="new-repo"
           
-          # === 修改点1：简化目录操作 ===
-          echo "=== 清理目标目录 ==="
-          rm -rf "$TARGET"
-          mkdir -p "$TARGET"
+          echo "=== 清空目标仓库 ==="
+          find "$TARGET_DIR" -mindepth 1 -delete  # 删除所有内容但保留.git目录
           
-          echo "=== 复制文件内容 ==="
-          # 修改点2：直接复制内容而非目录本身
-          cp -r "$SOURCE"/* "$TARGET"/
+          echo "=== 复制文件（不包括父目录）==="
+          # 复制luci-app-npc目录下的所有内容到仓库根目录
+          rsync -av --progress "$SOURCE_DIR/" "$TARGET_DIR/" 
           
-          echo "=== 验证文件 ==="
-          ls -l "$TARGET"  # 仅显示目标目录内容
+          echo "=== 文件复制完成 ==="
+          echo "访问链接：https://github.com/a1303045940/luci-app-npc"
+          ls -la "$TARGET_DIR"
 
-      # 步骤 4：提交并推送（简化输出）
-      - name: Commit & Push Changes
+      # 步骤 6：提交并推送到新仓库
+      - name: Commit & Push to New Repository
         run: |
-          cd target-repo
+          cd new-repo
           git config user.name "GitHub Actions"
           git config user.email "1303045940@qq.com"
           
+          # 添加所有变更
+          git add .
+          
+          # 检测变更并提交
           if [ -n "$(git status --porcelain)" ]; then
-            git add luci-app-npc  # 修改点3：精确添加目录
-            git commit -m "chore: Update luci-app-npc from source"
+            git commit -m "feat: Initial commit from luci-app-npc source"
             git push
-            echo "✅ 更新成功：luci-app-npc目录已同步"  # 修改点4：简化成功消息
+            echo "✅ 文件已推送到新仓库：https://github.com/a1303045940/luci-app-npc"
           else
             echo "ℹ️ 无文件变更，跳过提交"
           fi
