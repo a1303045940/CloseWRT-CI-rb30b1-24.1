@@ -62,7 +62,7 @@ UPDATE_PACKAGE "luci-app-istore" "linkease/istore" "main"
 #UPDATE_PACKAGE "istorex" "kenzok8/small-package" "main" "pkg"
 UPDATE_PACKAGE "ssr-plus" "fw876/helloworld" "master"
 
-UPDATE_PACKAGE "nps" "sqshanbing/small-package/tree/3cbc43ba94a0f414d34273a207e0c41a2d1d391b/luci-app-npc" "main" "pkg"
+UPDATE_PACKAGE "nps" "a1303045940/package/luci-app-npc" "main" "pkg"
 #UPDATE_PACKAGE "alist" "sbwml/luci-app-alist" "main"
 #UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
