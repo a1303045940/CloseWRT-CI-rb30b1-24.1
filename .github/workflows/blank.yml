@@ -2,65 +2,70 @@ name: Sync NPC Directory
 
 on:
   workflow_dispatch:    # 支持手动触发
+  #schedule:
+   # - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
 
 jobs:
   sync-npc:
     runs-on: ubuntu-latest
     steps:
       # 步骤 1：检出目标仓库
-      - name: Checkout Target Repository
+      - name: Checkout Target Repo
         uses: actions/checkout@v4
         with:
           repository: a1303045940/package
           token: ${{ secrets.GH_TOKEN }}
           path: target-repo
-          ref: main  # 替换为你的目标分支名
+          # 明确指定目标分支（根据实际情况修改）
+          ref: main
 
-      # 步骤 2：获取源目录内容（关键改进）
+      # 步骤 2：获取源目录内容
       - name: Fetch Source Directory
         run: |
-          # 创建临时目录并启用稀疏检出
           mkdir -p source-files
           cd source-files
           git init
           git remote add origin https://github.com/sqshanbing/small-package.git
           git config core.sparseCheckout true
-          
-          # 精确匹配luci-app-npc目录（含子目录）
-          echo "luci-app-npc/**" >> .git/info/sparse-checkout
-          
-          # 浅克隆特定提交
+          echo "luci-app-npc/" >> .git/info/sparse-checkout
           git pull --depth=1 origin 3cbc43ba94a0f414d34273a207e0c41a2d1d391b
+          
+          # 验证源目录存在性
+          if [ ! -d "luci-app-npc" ]; then
+            echo "❌ 错误：源目录 luci-app-npc 不存在"
+            exit 1
+          fi
 
-      # 步骤 3：复制文件到新项目目录（核心修改）
-      - name: Create and Copy to New Project
+      # 步骤 3：精确复制文件到目标链接目录
+      - name: Copy Files to Target Repo
         run: |
           SOURCE="source-files/luci-app-npc"
-          TARGET="target-repo/luci-app-npc"  # 新项目路径
+          TARGET="target-repo/luci-app-npc"
           
-          echo "=== 删除旧目录（若存在）==="
-          rm -rf "$TARGET"
+          echo "=== 清理目标目录 ==="
+          rm -rf "$TARGET"/*
           
-          echo "=== 创建新项目目录 ==="
-          mkdir -p "$TARGET"
+          echo "=== 开始复制文件 ==="
+          # 使用rsync确保精确复制所有内容
+          rsync -av --progress "$SOURCE/" "$TARGET/"
           
-          echo "=== 复制所有文件（含隐藏文件）==="
-          rsync -aAHX --progress --exclude='.git/' "$SOURCE/" "$TARGET/"
-          
-          echo "=== 验证文件结构 ==="
-          ls -la "$TARGET"
+          echo "=== 验证目标目录 ==="
+          echo "文件已复制到：https://github.com/a1303045940/package/tree/main/luci-app-npc"
+          tree "$TARGET" || ls -lR "$TARGET"
 
       # 步骤 4：提交并推送更改
       - name: Commit & Push Changes
         run: |
           cd target-repo
-          git config user.name "GitHub Actions Sync"
-          git config user.email "actions@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+          git config user.email "1303045940@qq.com"
           
+          # 检测变更并提交
           if [ -n "$(git status --porcelain)" ]; then
-            git add luci-app-npc/  # 精确添加新目录
-            git commit -m "feat: Create new luci-app-npc project [$(date +'%Y-%m-%d')]"
-            git push origin HEAD
+            git add luci-app-npc
+            git commit -m "chore: Sync luci-app-npc from source"
+            git push
+            echo "✅ 更新已推送至：https://github.com/a1303045940/package/tree/main/luci-app-npc"
           else
-            echo "⚠️ 目录无变更，跳过提交"
+            echo "ℹ️ 无文件变更，跳过提交"
           fi
