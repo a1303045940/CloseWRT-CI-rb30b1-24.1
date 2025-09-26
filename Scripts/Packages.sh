@@ -63,7 +63,7 @@ UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
 #UPDATE_PACKAGE "istorex" "kenzok8/small-package" "main" "pkg"
 #UPDATE_PACKAGE "ssr-plus" "fw876/helloworld" "master"
 
-#UPDATE_PACKAGE "np" "a1303045940/luci-app-npc" "main" "pkg"
+
 #UPDATE_PACKAGE "alist" "sbwml/luci-app-alist" "main"
 #UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
@@ -77,7 +77,7 @@ UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 #UPDATE_PACKAGE "viking" "VIKINGYFY/packages" "main" "" "luci-app-timewol luci-app-wolplus"
 #UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
 
-UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
+#UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
 UPDATE_PACKAGE "npc" "kenzok8/small-package" "main" "" "luci-app-npc"
 
 #更新软件包版本
