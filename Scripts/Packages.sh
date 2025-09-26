@@ -32,13 +32,16 @@ UPDATE_PACKAGE() {
 	git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git"
 
 	# 处理克隆的仓库
-	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
 		#find ./$REPO_NAME/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
-		# 修改后的 find 命令：覆盖深层目录（如 relevance/filebrowser）
-  	    find ./$REPO_NAME/ -maxdepth 10 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
-		rm -rf ./$REPO_NAME/
+
+		# 处理克隆的仓库
+ 	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
+  	  # 修改后的 find 命令：覆盖深层目录（如 relevance/filebrowser）
+  	  find ./$REPO_NAME/ -maxdepth 10 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
+  	  rm -rf ./$REPO_NAME/
 	elif [[ "$PKG_SPECIAL" == "name" ]]; then
-		mv -f $REPO_NAME $PKG_NAME
+  	  # 原逻辑：直接重命名仓库目录（适用于插件与仓库同名的情况）
+  	  mv -f $REPO_NAME $PKG_NAME
 	fi
 }
 
