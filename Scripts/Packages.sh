@@ -56,7 +56,8 @@ UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
 
 #UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
 
-UPDATE_PACKAGE "luci-app-store" "kenzok8/small-package" "main" "pkg"
+
+
 #UPDATE_PACKAGE "luci-app-istore" "linkease/istore" "main" "pgk"
 #UPDATE_PACKAGE "quickstart" "kenzok8/small-package" "main" "pkg"
 #UPDATE_PACKAGE "istorex" "kenzok8/small-package" "main" "pkg"
@@ -75,6 +76,9 @@ UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 #UPDATE_PACKAGE "qmodem" "FUjr/QModem" "main"
 #UPDATE_PACKAGE "viking" "VIKINGYFY/packages" "main" "" "luci-app-timewol luci-app-wolplus"
 #UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
+
+UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
+UPDATE_PACKAGE "nps" "kenzok8/small-package" "main" "" "luci-app-npc"
 
 #更新软件包版本
 UPDATE_VERSION() {
