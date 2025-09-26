@@ -56,7 +56,8 @@ UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
 
 #UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
 
-
+# npc安装
+UPDATE_PACKAGE "luci-app-npc" "kiddin9/kwrt-packages" "main" "pkg"
 
 #UPDATE_PACKAGE "istore" "linkease/istore" "main" "pgk"
 #UPDATE_PACKAGE "quickstart" "kenzok8/small-package" "main" "pkg"
@@ -79,6 +80,10 @@ UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 
 #UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
 UPDATE_PACKAGE "nps" "kiddin9/kwrt-packages" "main" "" "luci-app-npc"
+# istore商店
+UPDATE_PACKAGE "luci-app-store" "shidahuilang/openwrt-package" "Immortalwrt" "pkg"
+# npc安装
+UPDATE_PACKAGE "luci-app-npc" "kiddin9/kwrt-packages" "main" "pkg"
 
 #更新软件包版本
 UPDATE_VERSION() {
