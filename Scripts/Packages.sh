@@ -79,7 +79,6 @@ UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 #UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
 
 #UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
-UPDATE_PACKAGE "nps" "kiddin9/kwrt-packages" "main" "" "luci-app-npc"
 # istore商店
 UPDATE_PACKAGE "luci-app-store" "shidahuilang/openwrt-package" "Immortalwrt" "pkg"
 # npc安装
