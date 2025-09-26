@@ -78,7 +78,7 @@ UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 #UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
 
 #UPDATE_PACKAGE "store" "kenzok8/small-package" "main" "" "luci-app-store"
-UPDATE_PACKAGE "nps" "kenzok8/small-package" "main" "" "luci-app-npc"
+UPDATE_PACKAGE "nps" "kiddin9/kwrt-packages" "main" "" "luci-app-npc"
 
 #更新软件包版本
 UPDATE_VERSION() {
