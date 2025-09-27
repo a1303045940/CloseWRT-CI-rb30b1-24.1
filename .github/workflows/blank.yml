@@ -1,30 +1,29 @@
-name: Create luci-app-NPc 
+name: Sync luci-app-npc to My Repo
 
 on:
   workflow_dispatch:    # 支持手动触发
   # schedule:
-  #  - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
+  #   - cron: '0 0 * * *' # 每天 UTC 0 点自动执行
 
 jobs:
-  create-repo-and-sync:
+  sync-luci-app-npc:
     runs-on: ubuntu-latest
     steps:
-      # 步骤 1：安装 GitHub CLI
+      # 安装 GitHub CLI
       - name: Install GitHub CLI
         run: |
           sudo apt-get update
           sudo apt-get install -y curl
           curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/gith[...]
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
           sudo apt-get update
           sudo apt-get install -y gh
 
-      # 步骤 2：创建新仓库
-      - name: Create New Repository
+      # 检查并创建新仓库
+      - name: Create New Repository if Not Exists
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          # 检查仓库是否已存在
           if gh repo view a1303045940/luci-app-npc >/dev/null 2>&1; then
             echo "ℹ️ 仓库已存在，跳过创建"
           else
@@ -33,39 +32,24 @@ jobs:
             echo "✅ 新仓库已创建：https://github.com/a1303045940/luci-app-npc"
           fi
 
-      # 步骤 3：检出新创建的仓库
+      # 检出新仓库
       - name: Checkout New Repository
         uses: actions/checkout@v4
         with:
           repository: a1303045940/luci-app-npc
           token: ${{ secrets.GH_TOKEN }}
           path: new-repo
-          fetch-depth: 1  # 仅获取最新提交
+          fetch-depth: 1
 
-      # 步骤 4：获取源目录内容
-      - name: Fetch kwrt-packages
+      # 仅拉取 luci-app-npc 目录（稀疏检出）
+      - name: Sparse Checkout luci-app-npc
         run: |
-           # git clone --depth=1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-packages
-            # 初始化空仓库
-            git init package/kwrt-packages
-            cd package/kwrt-packages
-            git remote add origin https://github.com/kiddin9/kwrt-packages.git
-            git config core.sparseCheckout true
-            echo "luci-app-npc/*" >> .git/info/sparse-checkout
-            git pull --depth=1 origin main
-            cd ../
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/kiddin9/kwrt-packages.git package/kwrt-packages
+          cd package/kwrt-packages
+          git sparse-checkout set luci-app-npc
+          cd ../
 
-
-      - name: Fetch luci-app-npc only
-        run: |
-            git init package/kwrt-packages
-            cd package/kwrt-packages
-            git remote add origin https://github.com/kiddin9/kwrt-packages.git
-            git config core.sparseCheckout true
-            echo "luci-app-npc/*" >> .git/info/sparse-checkout
-            git pull --depth=1 origin main
-            cd ../
-      
+      # 拷贝 luci-app-npc 到新仓库
       - name: Copy luci-app-npc files to new repository
         run: |
           SOURCE_DIR="package/kwrt-packages/luci-app-npc"
@@ -77,23 +61,18 @@ jobs:
           fi
           rsync -av --progress "$SOURCE_DIR/" "$TARGET_DIR/"
           echo "=== 文件复制完成 ==="
-          ls -la "$TARGET_DIR""
+          ls -la "$TARGET_DIR"
 
-      # 步骤 6：提交并推送到新仓库
+      # 提交并推送到新仓库
       - name: Commit & Push to New Repository
         run: |
           cd new-repo
           git config user.name "GitHub Actions"
           git config user.email "1303045940@qq.com"
-          
-          # 添加所有变更
           git add .
-          
-          # 检测变更并提交
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "feat: Initial commit from package/kwrt-packages source"
+            git commit -m "feat: Initial sync from kiddin9/kwrt-packages/luci-app-npc"
             git push
             echo "✅ 文件已推送到新仓库：https://github.com/a1303045940/luci-app-npc"
           else
             echo "ℹ️ 无文件变更，跳过提交"
-          fi
