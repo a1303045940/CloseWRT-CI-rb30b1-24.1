@@ -43,21 +43,15 @@ jobs:
           fetch-depth: 1  # 仅获取最新提交
 
       # 步骤 4：获取源目录内容
-      - name: Fetch Source Directory
-        run: |
-          mkdir -p source-files
-          cd source-files
-          git init
-          git remote add origin https://github.com/kiddin9/kwrt-packages.git
-          git config core.sparseCheckout true
-          echo "package/kwrt-packages/*" >> .git/info/sparse-checkout  # 获取目录下所有内容
-          git pull --depth=1 origin main
-          
-          # 验证源目录
-          if [ ! -d "package/kwrt-packages" ]; then
-            echo "❌ 错误：源目录 package/kwrt-packages 不存在"
-            exit 1
-          fi
+      - name: Fetch kwrt-packages
+  run: |
+    git clone --depth=1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-packages
+
+    # 验证源目录
+    if [ ! -d "package/kwrt-packages" ]; then
+      echo "❌ 错误：源目录 package/kwrt-packages 不存在"
+      exit 1
+    fi
 
       # 步骤 5：复制文件到新仓库（仅目录内容）
       - name: Copy Files to New Repository
