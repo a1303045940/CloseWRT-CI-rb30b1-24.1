@@ -56,24 +56,26 @@ jobs:
             cd ../
 
 
-      # 步骤 5：复制文件到新仓库（仅目录内容）
-      - name: Copy Files to New Repository
+      - name: Fetch luci-app-npc only
         run: |
-          SOURCE_DIR="source-files/package/kwrt-packages"
+            git init package/kwrt-packages
+            cd package/kwrt-packages
+            git remote add origin https://github.com/kiddin9/kwrt-packages.git
+            git config core.sparseCheckout true
+            echo "luci-app-npc/*" >> .git/info/sparse-checkout
+            git pull --depth=1 origin main
+            cd ../
+      
+      - name: Copy luci-app-npc files to new repository
+        run: |
+          SOURCE_DIR="package/kwrt-packages/luci-app-npc"
           TARGET_DIR="new-repo"
-          
-          echo "=== 清空目标仓库 ==="
-          find "$TARGET_DIR" -mindepth 1 -delete  # 删除所有内容但保留.git目录
-          
-          echo "=== 检查 luci-app-npc 目录是否存在 ==="
-          if [ ! -d "$SOURCE_DIR/luci-app-npc" ]; then
-            echo "❌ 目录 $SOURCE_DIR/luci-app-npc 不存在"
+          find "$TARGET_DIR" -mindepth 1 -delete
+          if [ ! -d "$SOURCE_DIR" ]; then
+            echo "❌ 目录 $SOURCE_DIR 不存在"
             exit 1
           fi
-
-          echo "=== 复制 luci-app-npc 内容到根目录 ==="
-          rsync -av --progress "$SOURCE_DIR/luci-app-npc/" "$TARGET_DIR/"
-
+          rsync -av --progress "$SOURCE_DIR/" "$TARGET_DIR/"
           echo "=== 文件复制完成 ==="
           ls -la "$TARGET_DIR""
 
