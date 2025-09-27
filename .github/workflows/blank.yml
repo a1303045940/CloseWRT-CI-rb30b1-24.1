@@ -15,7 +15,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl
           curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/gith[...]
           sudo apt-get update
           sudo apt-get install -y gh
 
@@ -48,28 +48,28 @@ jobs:
           mkdir -p source-files
           cd source-files
           git init
-          git remote add origin https://github.com/sqshanbing/small-package.git
+          git remote add origin https://github.com/kiddin9/kwrt-packages.git
           git config core.sparseCheckout true
-          echo "luci-app-npc/*" >> .git/info/sparse-checkout  # 获取目录下所有内容
-          git pull --depth=1 origin 3cbc43ba94a0f414d34273a207e0c41a2d1d391b
+          echo "package/kwrt-packages/*" >> .git/info/sparse-checkout  # 获取目录下所有内容
+          git pull --depth=1 origin master
           
           # 验证源目录
-          if [ ! -d "luci-app-npc" ]; then
-            echo "❌ 错误：源目录 luci-app-npc 不存在"
+          if [ ! -d "package/kwrt-packages" ]; then
+            echo "❌ 错误：源目录 package/kwrt-packages 不存在"
             exit 1
           fi
 
       # 步骤 5：复制文件到新仓库（仅目录内容）
       - name: Copy Files to New Repository
         run: |
-          SOURCE_DIR="source-files/luci-app-npc"
+          SOURCE_DIR="source-files/package/kwrt-packages"
           TARGET_DIR="new-repo"
           
           echo "=== 清空目标仓库 ==="
           find "$TARGET_DIR" -mindepth 1 -delete  # 删除所有内容但保留.git目录
           
           echo "=== 复制文件（不包括父目录）==="
-          # 复制luci-app-npc目录下的所有内容到仓库根目录
+          # 复制package/kwrt-packages目录下的所有内容到仓库根目录
           rsync -av --progress "$SOURCE_DIR/" "$TARGET_DIR/" 
           
           echo "=== 文件复制完成 ==="
@@ -88,7 +88,7 @@ jobs:
           
           # 检测变更并提交
           if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "feat: Initial commit from luci-app-npc source"
+            git commit -m "feat: Initial commit from package/kwrt-packages source"
             git push
             echo "✅ 文件已推送到新仓库：https://github.com/a1303045940/luci-app-npc"
           else
