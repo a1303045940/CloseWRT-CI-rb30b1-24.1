@@ -66,6 +66,12 @@ jobs:
       # 提交并推送到新仓库
       - name: Commit & Push to New Repository
         run: |
+          if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+          git init
+          git remote add origin https://github.com/a1303045940/CloseWRT-CI-rb30b1-24.1.git
+          git fetch
+          git checkout main  # 如果你的主分支不是 main，请改成你的分支名
+          fi
           cd new-repo
           git config user.name "GitHub Actions"
           git config user.email "1303045940@qq.com"
