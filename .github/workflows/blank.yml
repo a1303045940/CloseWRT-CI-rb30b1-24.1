@@ -64,7 +64,7 @@ jobs:
           
           echo "=== 复制文件（不包括父目录）==="
           # 复制package/kwrt-packages目录下的所有内容到仓库根目录
-          rsync -av --progress "$SOURCE_DIR/" "$TARGET_DIR/" 
+          rsync -av --progress "$SOURCE_DIR/luci-app-npc/" "$TARGET_DIR/"
           
           echo "=== 文件复制完成 ==="
           echo "访问链接：https://github.com/a1303045940/luci-app-npc"
