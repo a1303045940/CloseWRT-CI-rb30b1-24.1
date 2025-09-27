@@ -62,13 +62,17 @@ jobs:
           echo "=== 清空目标仓库 ==="
           find "$TARGET_DIR" -mindepth 1 -delete  # 删除所有内容但保留.git目录
           
-          echo "=== 复制文件（不包括父目录）==="
-          # 复制package/kwrt-packages目录下的所有内容到仓库根目录
+          echo "=== 检查 luci-app-npc 目录是否存在 ==="
+          if [ ! -d "$SOURCE_DIR/luci-app-npc" ]; then
+            echo "❌ 目录 $SOURCE_DIR/luci-app-npc 不存在"
+            exit 1
+          fi
+
+          echo "=== 复制 luci-app-npc 内容到根目录 ==="
           rsync -av --progress "$SOURCE_DIR/luci-app-npc/" "$TARGET_DIR/"
-          
+
           echo "=== 文件复制完成 ==="
-          echo "访问链接：https://github.com/a1303045940/luci-app-npc"
-          ls -la "$TARGET_DIR"
+          ls -la "$TARGET_DIR""
 
       # 步骤 6：提交并推送到新仓库
       - name: Commit & Push to New Repository
