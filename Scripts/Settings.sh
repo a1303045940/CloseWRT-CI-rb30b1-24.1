@@ -43,21 +43,39 @@ mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
 rm -rf package/kwrt-packages
 
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
-cat << 'EOF' >> package/base-files/files/etc/rc.local
-if [ ! -f /etc/npc-init.flag ]; then
+# 定义你要插入的shell片段内容
+insert_content='if [ ! -f /etc/npc-init.flag ]; then
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
     WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
-    VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '{print $1}')
-	uci set npc.@npc[0].server_addr="192.168.1.1"
+    VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
+    uci set npc.@npc[0].server_addr="192.168.1.1"
     uci set npc.@npc[0].vkey="$VKEY"
-	uci set npc.@npc[0].compress="1"
-	uci set npc.@npc[0].crypt="1"
-	uci set npc.@npc[0].enable="1"
+    uci set npc.@npc[0].compress="1"
+    uci set npc.@npc[0].crypt="1"
+    uci set npc.@npc[0].enable="1"
     uci commit npc
 
     touch /etc/npc-init.flag
+    sleep 3
+    reboot
 fi
-EOF
+'
+
+RCLOCAL="package/base-files/files/etc/rc.local"
+
+# 只有没有插入过才插入（通过唯一标识判断）
+if ! grep -q 'npc-init.flag' "$RCLOCAL"; then
+    # 用awk插入到exit 0前
+    awk -v insert="$insert_content" '
+    /^exit 0/ {
+        print insert
+    }
+    { print }
+    ' "$RCLOCAL" > "$RCLOCAL.tmp" && mv "$RCLOCAL.tmp" "$RCLOCAL"
+    chmod +x "$RCLOCAL"
+fi
+
+
 #调整mtk系列配置
 sed -i '/TARGET.*mediatek/d' ./.config
 sed -i '/TARGET_MULTI_PROFILE/d' ./.config
