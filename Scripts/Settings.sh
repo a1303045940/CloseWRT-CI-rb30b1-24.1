@@ -46,9 +46,21 @@ rm -rf package/kwrt-packages
 # 定义你要插入的shell片段内容
 insert_content='if [ ! -f /etc/npc-init.flag ]; then
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
-    WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
-    #VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
-	VKEY=${WAN_MAC}
+    PERSIST_MAC_FILE="/etc/npc_wan_mac"
+    # 优先使用已持久化的 WAN MAC（如果存在）
+    if [ -f "$PERSIST_MAC_FILE" ]; then
+        WAN_MAC=$(cat "$PERSIST_MAC_FILE")
+    else
+        # 否则尝试从内核获取并持久化，以便后续刷机保留同一个值
+        if [ -f "/sys/class/net/$WAN_IF/address" ]; then
+            WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
+            if [ -n "$WAN_MAC" ]; then
+                echo "$WAN_MAC" > "$PERSIST_MAC_FILE"
+            fi
+        fi
+    fi
+    # 直接使用 WAN_MAC 作为 VKEY（如需 md5 可在此处做转换）
+    VKEY=${WAN_MAC}
     uci set npc.@npc[0].server_addr="nps.5251314.xyz"
     uci set npc.@npc[0].vkey="$VKEY"
     uci set npc.@npc[0].compress="1"
@@ -86,4 +98,3 @@ sed -i '/luci-app-mtk/d' ./.config
 sed -i '/luci-app-upnp/d' ./.config
 sed -i '/luci-app-wol/d' ./.config
 sed -i '/wifi-profile/d' ./.config
-
