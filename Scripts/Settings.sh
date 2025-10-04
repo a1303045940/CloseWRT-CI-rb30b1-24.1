@@ -45,7 +45,7 @@ rm -rf package/kwrt-packages
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
 # 定义你要插入的shell片段内容
 insert_content='if [ ! -f /etc/npc-init.flag ]; then
-    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
+    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
     PERSIST_MAC_FILE="/etc/npc_wan_mac"
     # 优先使用已持久化的 WAN MAC（如果存在）
     if [ -f "$PERSIST_MAC_FILE" ]; then
