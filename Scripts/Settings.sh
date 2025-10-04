@@ -47,8 +47,9 @@ rm -rf package/kwrt-packages
 insert_content='if [ ! -f /etc/npc-init.flag ]; then
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
     WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
-    VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
-    uci set npc.@npc[0].server_addr="192.168.1.1"
+    #VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
+	VKEY=${WAN_MAC}
+    uci set npc.@npc[0].server_addr="nps.5251314.xyz"
     uci set npc.@npc[0].vkey="$VKEY"
     uci set npc.@npc[0].compress="1"
     uci set npc.@npc[0].crypt="1"
