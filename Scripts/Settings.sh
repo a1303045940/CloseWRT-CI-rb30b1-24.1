@@ -89,7 +89,9 @@ auto_reconnection=true
 compress=true
 crypt=true
 EOF
-	
+	# 验证修改
+echo "文件内容如下："
+cat /etc/npc.conf
     touch /etc/npc-init.flag
     /etc/init.d/npc enable   # 设置开机自启
     /etc/init.d/npc restart
