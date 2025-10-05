@@ -69,7 +69,7 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
     uci commit npc
 	sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
 	#cat > /etc/npc.conf <<EOF [common] server_addr=nps.5251314.xyz:8024 conn_type=tcp vkey=b4:4d:43:d1:7d:2e auto_reconnection=true compress=true crypt=true EOF
-	touch /etc/npc-init.flag
+	touch /etc/npc.conf
 	sed -i '1i[common]' /etc/npc.conf && \
 	sed -i '2iserver_addr=nps.5251314.xyz:8024' /etc/npc.conf && \
 	sed -i '3iconn_type=tcp' /etc/npc.conf && \
