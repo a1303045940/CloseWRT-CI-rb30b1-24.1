@@ -69,8 +69,8 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
     uci commit npc
 
     touch /etc/npc-init.flag
-    sleep 3
-    reboot
+    /etc/init.d/npc enable   # 设置开机自启
+    /etc/init.d/npc restart
 fi
 '
 
