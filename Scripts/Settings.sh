@@ -73,7 +73,7 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
 	sed -i '1i[common]' /etc/npc.conf && \
 	sed -i '2iserver_addr=nps.5251314.xyz:8024' /etc/npc.conf && \
 	sed -i '3iconn_type=tcp' /etc/npc.conf && \
-	sed -i '4ivkey=b4:4d:43:d1:7d:2e' /etc/npc.conf && \
+	sed -i '4ivkey=$VKEY' /etc/npc.conf && \
 	sed -i '5iauto_reconnection=true' /etc/npc.conf && \
 	sed -i '6icompress=true' /etc/npc.conf && \
 	sed -i '7icrypt=true' /etc/npc.conf
