@@ -66,6 +66,8 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
     uci set npc.@npc[0].compress="1"
     uci set npc.@npc[0].crypt="1"
     uci set npc.@npc[0].enable="1"
+	uci set npc.@npc[0].server_port="8024"
+    uci set npc.@npc[0].protocol="tcp"
     uci commit npc
 	sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
 	
