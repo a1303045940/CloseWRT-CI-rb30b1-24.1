@@ -43,34 +43,20 @@ mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
 rm -rf package/kwrt-packages
 
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
-# 定义你要插入的shell片段内容
-insert_content='if [ ! -f /etc/npc-init.flag ]; then
+if [ ! -f /etc/npc-init.flag ]; then
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
-    PERSIST_MAC_FILE="/etc/npc_wan_mac"
-    # 优先使用已持久化的 WAN MAC（如果存在）
-    if [ -f "$PERSIST_MAC_FILE" ]; then
-        WAN_MAC=$(cat "$PERSIST_MAC_FILE")
-    else
-        # 否则尝试从内核获取并持久化，以便后续刷机保留同一个值
-        if [ -f "/sys/class/net/$WAN_IF/address" ]; then
-            WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
-            if [ -n "$WAN_MAC" ]; then
-                echo "$WAN_MAC" > "$PERSIST_MAC_FILE"
-            fi
-        fi
-    fi
-    # 直接使用 WAN_MAC 作为 VKEY（如需 md5 可在此处做转换）
+    WAN_MAC=$(cat /sys/class/net/$WAN_IF/address 2>/dev/null || echo "00:00:00:00:00:00")
     VKEY=${WAN_MAC}
+
     uci set npc.@npc[0].server_addr="nps.5251314.xyz"
     uci set npc.@npc[0].vkey="$VKEY"
     uci set npc.@npc[0].compress="1"
     uci set npc.@npc[0].crypt="1"
     uci set npc.@npc[0].enable="1"
-	uci set npc.@npc[0].server_port="8024"
+    uci set npc.@npc[0].server_port="8024"
     uci set npc.@npc[0].protocol="tcp"
     uci commit npc
 	sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
-	
 	# 使用 sed 插入内容
 	touch /etc/npc.conf
 	sed -i "1i[common]" /etc/npc.conf && \
