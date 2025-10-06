@@ -42,11 +42,10 @@ git clone --depth 1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-pa
 mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
 rm -rf package/kwrt-packages
 
-# 避免重复写入
 if ! grep -q "npc-init.flag" /etc/rc.local; then
-    cat << 'EOF' >> /etc/rc.local
-# 自动初始化npc，仅首次启动执行
-if [ ! -f /etc/npc-init.flag ]; then
+    sed -i '/exit 0/i\
+# 自动初始化npc，仅首次启动执行\
+if [ ! -f /etc/npc-init.flag ]; then\
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
     WAN_MAC=$(cat /sys/class/net/$WAN_IF/address 2>/dev/null || echo "00:00:00:00:00:00")
     VKEY=${WAN_MAC}
@@ -73,8 +72,8 @@ if [ ! -f /etc/npc-init.flag ]; then
     touch /etc/npc-init.flag
     /etc/init.d/npc enable   # 设置开机自启
     /etc/init.d/npc restart
-fi
-EOF
+fi\
+' /etc/rc.local
 fi
 
 
