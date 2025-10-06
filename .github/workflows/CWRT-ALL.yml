@@ -34,10 +34,10 @@ jobs:
         uses: ophub/delete-releases-workflows@main
         with:
           gh_token: ${{secrets.GH_TOKEN}}
-          delete_releases: false
+          delete_releases: true
           releases_keep_latest: 0
-          delete_tags: false
-          delete_workflows: false
+          delete_tags: true
+          delete_workflows: true
           workflows_keep_day: 0
 
   config:
