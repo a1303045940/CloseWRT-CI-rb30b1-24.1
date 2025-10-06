@@ -88,11 +88,18 @@ if [ -f "$RUST_FILE" ]; then
 	cd $PKG_PATH && echo "rust has been fixed!"
 fi
 #移除sb内核回溯移植补丁
-SB_PATCH="../feeds/packages/net/sing-box/patches"
-if [ -d "$SB_PATCH" ]; then
-	echo " "
+#SB_PATCH="../feeds/packages/net/sing-box/patches"
+#if [ -d "$SB_PATCH" ]; then
+#	echo " "
 
-	rm -rf $SB_PATCH
+#	rm -rf $SB_PATCH
 
-	cd $PKG_PATH && echo "sing-box patches has been fixed!"
+#	cd $PKG_PATH && echo "sing-box patches has been fixed!"
+#fi
+#只移除 sb 的内核回溯移植补丁
+SB_PATCH="../feeds/packages/net/sing-box/patches/010-Fix-ipv6-tproxy-listener.patch"
+if [ -f "$SB_PATCH" ]; then
+    echo " "
+    rm -f "$SB_PATCH"
+    cd $PKG_PATH && echo "sing-box patch 010-Fix-ipv6-tproxy-listener.patch has been removed!"
 fi
