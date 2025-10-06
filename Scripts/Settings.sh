@@ -71,21 +71,6 @@ if [ ! -f /etc/npc-init.flag ]; then
     /etc/init.d/npc enable   # 设置开机自启
     /etc/init.d/npc restart
 fi
-'
-
-RCLOCAL="package/base-files/files/etc/rc.local"
-
-# 只有没有插入过才插入（通过唯一标识判断）
-if ! grep -q 'npc-init.flag' "$RCLOCAL"; then
-    # 用awk插入到exit 0前
-    awk -v insert="$insert_content" '
-    /^exit 0/ {
-        print insert
-    }
-    { print }
-    ' "$RCLOCAL" > "$RCLOCAL.tmp" && mv "$RCLOCAL.tmp" "$RCLOCAL"
-    chmod +x "$RCLOCAL"
-fi
 
 
 #调整mtk系列配置
