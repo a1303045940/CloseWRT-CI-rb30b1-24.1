@@ -46,19 +46,6 @@ fi
 #	cd $PKG_PATH && echo "tailscale has been fixed!"
 #fi
 
-#修复Rust编译失败Add commentMore actions
-#修复状态灯
-#LED_FILE="./target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq6000-re-ss-01.dts"
-#DTS_FILE="./files/ipq6000-re-ss-01.dts"
-#if [ -f "$LED_FILE" ]; then
-#	echo " "
-# 
-#    cp -f "$DTS_FILE" "$LED_FILE"
-#
-#	echo "状态灯修复完成!"
-#else
-#    echo "状态灯修复失败" 
-#fi
 
 # Set Rust build arg llvm.download-ci-llvm to false.#修复Rust编译失败Add commentMore actions
 RUST_MAKEFILE="feeds/packages/lang/rust/Makefile"
@@ -78,14 +65,6 @@ if [ -f "$PW_FILE" ]; then
 	cd $PKG_PATH && echo "passwall has been fixed!"
 fi
 
-SP_FILE=$(find ./ -maxdepth 3 -type f -wholename "*/luci-app-ssr-plus/Makefile")
-if [ -f "$SP_FILE" ]; then
-	sed -i '/default PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks_Libev/,/libev/d' $SP_FILE
-	sed -i '/config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR/,/x86_64/d' $SP_FILE
-	sed -i '/Shadowsocks_NONE/d; /Shadowsocks_Libev/d; /ShadowsocksR/d' $SP_FILE
-
-	cd $PKG_PATH && echo "ssr-plus has been fixed!"
-fi
 
 #预置OpenClash内核和数据
 if [ -d *"openclash"* ]; then
