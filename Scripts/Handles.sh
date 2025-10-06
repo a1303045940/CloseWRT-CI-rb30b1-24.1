@@ -36,6 +36,13 @@ if [ -d *"luci-theme-argon"* ]; then
 	cd $PKG_PATH && echo "theme-argon has been fixed!"
 fi
 
+# 更新 Golang 为最新版
+cd "$pkgPath"
+rm -rf "$WRT_MainPath/feeds/packages/lang/golang"
+git clone https://github.com/sbwml/packages_lang_golang -b 25.x "$WRT_MainPath/feeds/packages/lang/golang"
+echo 'Updated: golang'
+echo ''
+
 #修改qca-nss-drv启动顺序
 NSS_DRV="../feeds/nss_packages/qca-nss-drv/files/qca-nss-drv.init"
 if [ -f "$NSS_DRV" ]; then
