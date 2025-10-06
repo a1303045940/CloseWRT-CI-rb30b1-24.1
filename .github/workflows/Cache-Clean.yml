@@ -1,14 +1,13 @@
 name: Cache-Clean
-
 on:
   schedule:
-    - cron: 0 20 * * 0
-  workflow_dispatch:
+    - cron: 0 20 * * 0  # 每周日20:00运行
+  workflow_dispatch:  # 允许手动触发
 
 permissions: write-all
 
 env:
-  GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   cleanup:
@@ -16,6 +15,16 @@ jobs:
     steps:
       - name: Checkout Projects
         uses: actions/checkout@main
+
+      - name: Delete old Releases and Workflows
+        uses: ophub/delete-releases-workflows@main
+        with:
+          gh_token: ${{ secrets.GH_TOKEN }}
+          delete_releases: true
+          releases_keep_latest: 0
+          delete_tags: true
+          delete_workflows: true
+          workflows_keep_day: 0
 
       - name: Cache Clean
         run: gh cache delete --all
