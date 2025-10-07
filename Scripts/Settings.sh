@@ -42,6 +42,8 @@ git clone --depth 1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-pa
 mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
 rm -rf package/kwrt-packages
 
+cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
+chmod +x "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
 
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
 RCLOCAL="package/base-files/files/etc/rc.local"
