@@ -44,8 +44,8 @@ rm -rf package/kwrt-packages
 
 
 #开机启动文件rc.local替换
-cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
-chmod +x "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
+#cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
+#chmod +x "$GITHUB_WORKSPACE/package/base-files/files/etc/rc.local"
 
 
 #调整mtk系列配置
