@@ -92,7 +92,20 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
     uci set npc.@npc[0].server_port="8024"
     uci set npc.@npc[0].protocol="tcp"
     uci commit npc
+	sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
+	# 使用 sed 插入内容
+	touch /etc/npc.conf
+	sed -i "1i[common]" /etc/npc.conf && \
+	sed -i "2iserver_addr=nps.5251314.xyz:8024" /etc/npc.conf && \
+	sed -i "3iconn_type=tcp" /etc/npc.conf && \
+	sed -i "4ivkey=${VKEY}" /etc/npc.conf && \
+	sed -i "5iauto_reconnection=true" /etc/npc.conf && \
+	sed -i "6icompress=true" /etc/npc.conf && \
+	sed -i "7icrypt=true" /etc/npc.conf
 
+    touch /etc/npc-init.flag
+    /etc/init.d/npc enable   # 设置开机自启
+    /etc/init.d/npc restart
     touch /etc/npc-init.flag
 fi
 '
