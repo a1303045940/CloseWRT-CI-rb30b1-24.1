@@ -175,6 +175,8 @@ jobs:
             $GITHUB_WORKSPACE/Scripts/Settings.sh
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
+          cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" package/base-files/files/etc/rc.local
+          chmod +x package/base-files/files/etc/rc.local
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
 
