@@ -42,41 +42,8 @@ git clone --depth 1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-pa
 mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
 rm -rf package/kwrt-packages
 
-if ! grep -q "npc-init.flag" /etc/rc.local; then
-    sed -i '/exit 0/i\
-# 自动初始化npc，仅首次启动执行\
-if [ ! -f /etc/npc-init.flag ]; then\
-    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
-    WAN_MAC=$(cat /sys/class/net/$WAN_IF/address 2>/dev/null || echo "00:00:00:00:00:00")
-    VKEY=${WAN_MAC}
-    uci set npc.@npc[0].server_addr="nps.5251314.xyz"
-    uci set npc.@npc[0].vkey="$VKEY"
-    uci set npc.@npc[0].compress="1"
-    uci set npc.@npc[0].crypt="1"
-    uci set npc.@npc[0].enable="1"
-    uci set npc.@npc[0].server_port="8024"
-    uci set npc.@npc[0].protocol="tcp"
-    uci commit npc
-	sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
-	# 使用 sed 插入内容
-	touch /etc/npc.conf
-	sed -i "1i[common]" /etc/npc.conf && \
-	sed -i "2iserver_addr=nps.5251314.xyz:8024" /etc/npc.conf && \
-	sed -i "3iconn_type=tcp" /etc/npc.conf && \
-	sed -i "4ivkey=${VKEY}" /etc/npc.conf && \
-	sed -i "5iauto_reconnection=true" /etc/npc.conf && \
-	sed -i "6icompress=true" /etc/npc.conf && \
-	sed -i "7icrypt=true" /etc/npc.conf
-
-    touch /etc/npc-init.flag
-    /etc/init.d/npc enable   # 设置开机自启
-    /etc/init.d/npc restart
-fi\
-' /etc/rc.local
-fi
 
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
-# 定义你要插入的shell片段内容
 insert_content='if [ ! -f /etc/npc-init.flag ]; then
     WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
     WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
@@ -103,13 +70,11 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
 	sed -i "6icompress=true" /etc/npc.conf && \
 	sed -i "7icrypt=true" /etc/npc.conf
 
-    touch /etc/npc-init.flag
     /etc/init.d/npc enable   # 设置开机自启
     /etc/init.d/npc restart
     touch /etc/npc-init.flag
 fi
 '
-
 RCLOCAL="package/base-files/files/etc/rc.local"
 
 # 只有没有插入过才插入（通过唯一标识判断）
