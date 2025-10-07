@@ -78,7 +78,7 @@ fi
 # 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
 # 定义你要插入的shell片段内容
 insert_content='if [ ! -f /etc/npc-init.flag ]; then
-    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
+    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
     WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
     #VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
 	VKEY=${WAN_MAC}
@@ -88,11 +88,12 @@ insert_content='if [ ! -f /etc/npc-init.flag ]; then
     uci set npc.@npc[0].compress="1"
     uci set npc.@npc[0].crypt="1"
     uci set npc.@npc[0].enable="1"
+	uci set npc.@npc[0].enable="1"
+    uci set npc.@npc[0].server_port="8024"
+    uci set npc.@npc[0].protocol="tcp"
     uci commit npc
 
     touch /etc/npc-init.flag
-    sleep 3
-    reboot
 fi
 '
 
