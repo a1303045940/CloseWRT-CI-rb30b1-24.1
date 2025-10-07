@@ -75,7 +75,40 @@ fi\
 ' /etc/rc.local
 fi
 
+# 在 Settings.sh 末尾添加以下内容自动写入 /etc/rc.local
+# 定义你要插入的shell片段内容
+insert_content='if [ ! -f /etc/npc-init.flag ]; then
+    WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "eth0")
+    WAN_MAC=$(cat /sys/class/net/$WAN_IF/address)
+    #VKEY=$(echo -n "$WAN_MAC" | md5sum | awk '\''{print $1}'\'')
+	VKEY=${WAN_MAC}
 
+    uci set npc.@npc[0].server_addr="nps.5251314.xyz"
+    uci set npc.@npc[0].vkey="$VKEY"
+    uci set npc.@npc[0].compress="1"
+    uci set npc.@npc[0].crypt="1"
+    uci set npc.@npc[0].enable="1"
+    uci commit npc
+
+    touch /etc/npc-init.flag
+    sleep 3
+    reboot
+fi
+'
+
+RCLOCAL="package/base-files/files/etc/rc.local"
+
+# 只有没有插入过才插入（通过唯一标识判断）
+if ! grep -q 'npc-init.flag' "$RCLOCAL"; then
+    # 用awk插入到exit 0前
+    awk -v insert="$insert_content" '
+    /^exit 0/ {
+        print insert
+    }
+    { print }
+    ' "$RCLOCAL" > "$RCLOCAL.tmp" && mv "$RCLOCAL.tmp" "$RCLOCAL"
+    chmod +x "$RCLOCAL"
+fi
 
 #调整mtk系列配置
 sed -i '/TARGET.*mediatek/d' ./.config
