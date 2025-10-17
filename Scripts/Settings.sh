@@ -45,8 +45,8 @@ rm -rf package/kwrt-packages
 
 #开机启动文件rc.local替换
 
-cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
-chmod +x package/base-files/files/etc/init.d/npc
+#cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
+#chmod +x package/base-files/files/etc/init.d/npc
 cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
 chmod +x package/base-files/files/etc/npc.conf
 
