@@ -19,8 +19,6 @@ if [ ! -f /etc/npc-init.flag ]; then
     sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
     #sed -i "s|vkey=.*|vkey=${VKEY}|" /etc/npc.conf
     sed -i "s|^vkey=.*$|vkey=${VKEY}|" /etc/npc.conf
-
-
     /etc/init.d/npc enable   # 设置开机自启
     /etc/init.d/npc restart
     touch /etc/npc-init.flag
