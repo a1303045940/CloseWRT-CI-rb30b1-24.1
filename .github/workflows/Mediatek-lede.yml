@@ -1,5 +1,5 @@
 #CI项目
-name: CWRT-ALL
+name: Mediatek-lede
 
 #CI计划
 on:
