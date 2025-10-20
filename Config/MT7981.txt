@@ -6,6 +6,10 @@ CONFIG_TARGET_mediatek_mt7981=y
 #CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_a10-stock=y
 #CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_a10-ubootmod=y
 CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_cmcc_rax3000m-nand=y
+
+CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_clt-r30b1=y
+CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_clt-r30b1-112M=y
+
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_cmcc_rax3000me=n
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_cmcc_rax3000m-emmc=n
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_cmcc_rax3000m-emmc-usboffload=n
