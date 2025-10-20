@@ -192,7 +192,7 @@ jobs:
           cp "$GITHUB_WORKSPACE/r30b1/filogic.mk" target/linux/mediatek/image/filogic.mk
           
           
-          echo "3000M dts文件替换成功"
+          echo "r30b1和3000M dts文件替换成功"
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
 
