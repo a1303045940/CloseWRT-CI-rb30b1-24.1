@@ -351,8 +351,8 @@ endef
 TARGET_DEVICES += cmcc_rax3000m-nand
 
 define Device/clt-r30b1-112M
-  DEVICE_VENDOR := clt
-  DEVICE_MODEL := CLT R30B1
+  DEVICE_VENDOR := CLT
+  DEVICE_MODEL := R30B1
   DEVICE_DTS := mt7981b-clt-r30b1-112M
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware
