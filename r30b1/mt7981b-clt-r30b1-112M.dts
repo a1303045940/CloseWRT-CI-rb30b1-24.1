@@ -1,5 +1,5 @@
 /dts-v1/;
-#include "mt7981-clt-r30b1-base.dtsi"
+#include "mt7981b-clt-r30b1-base.dtsi"
 
 / {
 	nmbm_spim_nand {
