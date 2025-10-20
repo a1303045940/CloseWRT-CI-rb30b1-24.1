@@ -350,10 +350,10 @@ define Device/cmcc_rax3000m-nand
 endef
 TARGET_DEVICES += cmcc_rax3000m-nand
 
-define Device/clt_r30b1
+define Device/clt-r30b1-112M
   DEVICE_VENDOR := clt
-  DEVICE_MODEL := r30b1
-  DEVICE_DTS := mt7981b-clt-r30b1
+  DEVICE_MODEL := r30b1-112M
+  DEVICE_DTS := mt7981b-clt-r30b1-112M
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware
   UBINIZE_OPTS := -E 5
@@ -369,7 +369,7 @@ define Device/clt_r30b1
   KERNEL_INITRAMFS = kernel-bin | lzma | \
 	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
 endef
-TARGET_DEVICES += clt_r30b1
+TARGET_DEVICES += clt-r30b1-112M
 
 define Device/cmcc_xr30-emmc
   DEVICE_VENDOR := CMCC
