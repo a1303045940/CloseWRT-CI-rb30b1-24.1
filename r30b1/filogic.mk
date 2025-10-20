@@ -350,6 +350,27 @@ define Device/cmcc_rax3000m-nand
 endef
 TARGET_DEVICES += cmcc_rax3000m-nand
 
+define Device/clt_r30b1
+  DEVICE_VENDOR := clt
+  DEVICE_MODEL := r30b1
+  DEVICE_DTS := mt7981b-clt-r30b1
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 116736k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += clt_r30b1
+
 define Device/cmcc_xr30-emmc
   DEVICE_VENDOR := CMCC
   DEVICE_MODEL := XR30 (eMMC version)
