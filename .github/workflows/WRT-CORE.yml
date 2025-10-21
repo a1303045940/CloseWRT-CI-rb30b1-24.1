@@ -182,7 +182,10 @@ jobs:
           cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
           chmod +x package/base-files/files/etc/npc.conf
           
-          cp $GITHUB_WORKSPACE/r30b1/* target/linux/mediatek/dts
+          #cp $GITHUB_WORKSPACE/r30b1/* target/linux/mediatek/dts
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-base.dtsi" target/linux/mediatek/dts/mt7981b-clt-r30b1-base.dtsi
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/mt7981b-clt-r30b1-112M.dts
+         
 
           cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-base.dtsi" target/linux/mediatek/dts/mt7981b-cmcc-rax3000m.dts
           chmod +x target/linux/mediatek/dts/mt7981b-cmcc-rax3000m.dts
