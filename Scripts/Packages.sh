@@ -87,6 +87,7 @@ UPDATE_PACKAGE "luci-app-store" "shidahuilang/openwrt-package" "Immortalwrt" "pk
 # npc安装
 UPDATE_PACKAGE "luci-app-npc" "kiddin9/kwrt-packages" "main" "pkg"
 UPDATE_PACKAGE "luci-app-frpc" "kiddin9/kwrt-packages" "main" "pkg"
+UPDATE_PACKAGE "luci-app-zerotier" "kiddin9/kwrt-packages" "main" "pkg"
 UPDATE_PACKAGE "luci-app-ssr-plus" "kiddin9/kwrt-packages" "main" "pkg"
 
 #更新软件包版本
