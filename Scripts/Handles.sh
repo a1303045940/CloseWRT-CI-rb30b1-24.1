@@ -96,18 +96,27 @@ if [ -f "$RUST_FILE" ]; then
 	cd $PKG_PATH && echo "rust has been fixed!"
 fi
 
+
+
 filetype=$(file "$1")
 if echo "$filetype" | grep -q 'shared object'; then
     echo "$1: shared object"
     # 跳过 strip
     exit 0
 fi
-#移除sb内核回溯移植补丁
-#SB_PATCH="../feeds/packages/net/sing-box/patches"
-#if [ -d "$SB_PATCH" ]; then
-#	echo " "
 
-#	rm -rf $SB_PATCH
 
-#	cd $PKG_PATH && echo "sing-box patches has been fixed!"
-#fi
+# 解决 miniupnpd nftables 文件冲突：优先保留 miniupnpd-mtk-adjust-nftables
+WRT_ROOT="${GITHUB_WORKSPACE}/wrt"
+PKG1_DIR=$(find "$WRT_ROOT" -type d -name "miniupnpd-nftables" -print -quit)
+PKG2_DIR=$(find "$WRT_ROOT" -type d -name "miniupnpd-mtk-adjust-nftables" -print -quit)
+
+if [ -n "$PKG1_DIR" ] && [ -n "$PKG2_DIR" ]; then
+  # 假定保留 miniupnpd-mtk-adjust-nftables，删除 miniupnpd-nftables 中的重复文件
+  DUP_FILE_REL="files/20-miniupnpd.nft"
+  DUP1="$PKG1_DIR/$DUP_FILE_REL"
+  if [ -f "$DUP1" ]; then
+    rm -f "$DUP1"
+    echo "Removed duplicate $DUP1 to avoid package conflict between miniupnpd-nftables and miniupnpd-mtk-adjust-nftables"
+  fi
+fi
