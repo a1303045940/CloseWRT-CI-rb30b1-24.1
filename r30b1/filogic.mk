@@ -330,30 +330,9 @@ endef
 TARGET_DEVICES += cmcc_rax3000m-emmc
 
 define Device/cmcc_rax3000m-nand
-  DEVICE_VENDOR := CMCC
-  DEVICE_MODEL := RAX3000M (NAND version)
-  DEVICE_DTS := mt7981b-cmcc-rax3000m-nand
-  DEVICE_DTS_DIR := ../dts
-  DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware kmod-usb3
-  UBINIZE_OPTS := -E 5
-  BLOCKSIZE := 128k
-  PAGESIZE := 2048
-  IMAGE_SIZE := 116736k
-  KERNEL_IN_UBI := 1
-  IMAGES += factory.bin
-  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
-  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
-  KERNEL = kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
-  KERNEL_INITRAMFS = kernel-bin | lzma | \
-	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
-endef
-TARGET_DEVICES += cmcc_rax3000m-nand
-
-define Device/clt-r30b1-112M
   DEVICE_VENDOR := CLT
   DEVICE_MODEL := R30B1
-  DEVICE_DTS := mt7981b-clt-r30b1-112M
+  DEVICE_DTS := mt7981b-cmcc-rax3000m-nand
   DEVICE_DTS_DIR := ../dts
   DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware
   UBINIZE_OPTS := -E 5
@@ -369,7 +348,28 @@ define Device/clt-r30b1-112M
   KERNEL_INITRAMFS = kernel-bin | lzma | \
 	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
 endef
-TARGET_DEVICES += clt-r30b1-112M
+TARGET_DEVICES += cmcc_rax3000m-nand
+
+define Device/clt_r30b1-112m
+  DEVICE_VENDOR := CLT
+  DEVICE_MODEL := R30B1
+  DEVICE_DTS := mt7981b-clt-r30b1-112m
+  DEVICE_DTS_DIR := ../dts
+  DEVICE_PACKAGES := kmod-mt7981-firmware mt7981-wo-firmware
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  IMAGE_SIZE := 116736k
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+  KERNEL = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb
+  KERNEL_INITRAMFS = kernel-bin | lzma | \
+	fit lzma $$(KDIR)/image-$$(firstword $$(DEVICE_DTS)).dtb with-initrd
+endef
+TARGET_DEVICES += clt_r30b1-112m
 
 define Device/cmcc_xr30-emmc
   DEVICE_VENDOR := CMCC
