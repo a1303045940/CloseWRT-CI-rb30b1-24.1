@@ -49,7 +49,7 @@ jobs:
       matrix:
         CONFIG: [filogic]
         REPO_INFO:
-          - {SOURCE: "padavanonly/immortalwrt-mt798x-24.10", BRANCH: "openwrt-24.10-6.6"}
+          - {SOURCE: "coolsnowwolf/lede", BRANCH: "master"}
 
     #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/Lede-WRT-CORE.yml
