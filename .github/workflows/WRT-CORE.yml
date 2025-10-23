@@ -184,12 +184,12 @@ jobs:
           
           #cp $GITHUB_WORKSPACE/r30b1/* target/linux/mediatek/dts
           cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-base.dtsi" target/linux/mediatek/dts/mt7981b-clt-r30b1-base.dtsi
-          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/mt7981b-clt-r30b1-112M.dts
-          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1.dts" target/linux/mt7981b-clt-r30b1.dts
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/dts/mt7981b-clt-r30b1-112M.dts
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1.dts" target/linux/dts/mt7981b-clt-r30b1.dts
 
           cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-base.dtsi" target/linux/mediatek/dts/mt7981b-cmcc-rax3000m.dts
           chmod +x target/linux/mediatek/dts/mt7981b-cmcc-rax3000m.dts
-          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/mediatek/mt7981b-cmcc-rax3000m-nand.dts
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/mediatek/dts/mt7981b-cmcc-rax3000m-nand.dts
           chmod +x target/linux/mediatek/dts/mt7981b-cmcc-rax3000m-nand.dts
 
           cp "$GITHUB_WORKSPACE/r30b1/filogic.mk" target/linux/mediatek/image/filogic.mk
