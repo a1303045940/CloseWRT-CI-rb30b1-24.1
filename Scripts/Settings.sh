@@ -36,6 +36,26 @@ if [ -n "$WRT_PACKAGE" ]; then
 fi
 
 
+
+#根据源码来修改
+if [[ $WRT_URL == *"lede"* ]]; then
+	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
+	#修改默认时间格式
+	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
+	# 注释原行（精确匹配原URL和版本）
+	sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
+	# 添加新行到文件末尾
+	echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
+	#添加编译日期标识
+	sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
+	#添加第三方软件源
+	sed -i "s/option check_signature/# option check_signature/g" package/system/opkg/Makefile
+	echo src/gz openwrt_kiddin9 https://dl.openwrt.ai/latest/packages/aarch64_cortex-a53/kiddin9 >> ./package/system/opkg/files/customfeeds.conf
+
+fi
+
+
+
 #添加Kwrt软件源
 git clone --depth 1 https://github.com/destan19/OpenAppFilter.git  package/oaf
 git clone --depth 1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-packages
