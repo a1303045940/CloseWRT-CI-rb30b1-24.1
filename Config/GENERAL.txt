@@ -23,7 +23,7 @@ CONFIG_PACKAGE_luci-app-upnp=n
 #CONFIG_PACKAGE_luci-app-wolplus=y
 CONFIG_PACKAGE_openssh-sftp-server=n
 
-
+CONFIG_PACKAGE_luci-app-filetransfer=n
 
 # 增加几个必备组件 方便用户安装iStore
 
@@ -111,6 +111,7 @@ CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Hysteria=y
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Server is not set
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox=y
+
 
 
 
