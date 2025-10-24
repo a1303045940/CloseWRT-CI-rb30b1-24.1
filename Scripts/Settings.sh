@@ -52,7 +52,8 @@ if [[ $WRT_URL == *"lede"* ]]; then
 	# 注释原行（精确匹配原URL和版本）
 	sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
 	# 添加新行到文件末尾
-	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+	#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+	echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
 	# 修改版本为编译日期
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
