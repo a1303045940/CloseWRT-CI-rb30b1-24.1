@@ -37,7 +37,8 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
-	
+	#修改luc显示版本改成系统版本
+	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
 	
 	# 修改 2.4GHz Radio 的默认SSID
 	#sed -i '/band="2g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-2.4G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
