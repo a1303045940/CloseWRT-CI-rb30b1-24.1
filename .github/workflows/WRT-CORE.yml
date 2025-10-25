@@ -63,6 +63,15 @@ jobs:
     steps:
       - name: Checkout Projects
         uses: actions/checkout@main
+        
+      - name: Install host build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update sudo apt-get install -y --no-install-recommends
+          build-essential ca-certificates curl git pkg-config
+          libncurses5-dev libncursesw5-dev libtinfo-dev
+          libsqlite3-dev libssl-dev zlib1g-dev libbz2-dev
+          libreadline-dev libffi-dev liblzma-dev
 
       - name: Initialization Environment
         env:
