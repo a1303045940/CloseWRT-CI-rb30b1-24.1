@@ -42,6 +42,9 @@ sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 #修复软件源的问题
 sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
 
+# 添加两行代码到 exit 0 前面
+sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
+
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
