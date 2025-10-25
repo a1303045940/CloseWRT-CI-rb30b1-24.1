@@ -34,7 +34,7 @@ sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
+#echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
 
 #手动调整的插件
@@ -58,6 +58,9 @@ if [[ $WRT_URL == *"lede"* ]]; then
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/lean/default-settings/files/zzz-default-settings
+	#添加软件源
+	sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+	sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 
 fi
 
