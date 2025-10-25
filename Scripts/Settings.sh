@@ -19,7 +19,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 
 
 #根据源码来修改
-if [[ $WRT_URL !== *"lede"* ]]; then
+if [[ $WRT_URL != *"lede"* ]]; then
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 	#修改WIFI名称
