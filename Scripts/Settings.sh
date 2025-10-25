@@ -47,6 +47,7 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	#sed -i '/band="5g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-5G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	# 最大连接数修改为65535
 	sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
+	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 
 fi
 
@@ -80,11 +81,11 @@ if [[ $WRT_URL == *"lede"* ]]; then
 	#修改默认时间格式
 	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
 	# 注释原行（精确匹配原URL和版本）
-	#sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
+	sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
 	# 添加新行到文件末尾
 
 	#24.1 uci
-	#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 	
 	#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
 	# 修改版本为编译日期
