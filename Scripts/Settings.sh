@@ -45,6 +45,8 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	
 	# 修改 5GHz Radio 的默认SSID
 	#sed -i '/band="5g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-5G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
+	# 最大连接数修改为65535
+	sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
 
 fi
 
