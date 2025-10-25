@@ -45,9 +45,6 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	
 	# 修改 5GHz Radio 的默认SSID
 	#sed -i '/band="5g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-5G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
-	# 最大连接数修改为65535
-	sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
-	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 
 fi
 
@@ -101,7 +98,9 @@ fi
 sed -i "s/option check_signature/# option check_signature/g" package/system/opkg/Makefile
 echo src/gz openwrt_kiddin9 https://dl.openwrt.ai/latest/packages/aarch64_cortex-a53/kiddin9 >> ./package/system/opkg/files/customfeeds.conf
 
-
+# 最大连接数修改为65535
+sed -i '/customized in this file/a net.netfilter.nf_conntrack_max=65535' package/base-files/files/etc/sysctl.conf
+	
 #开机启动文件rc.local替换
 
 #cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
