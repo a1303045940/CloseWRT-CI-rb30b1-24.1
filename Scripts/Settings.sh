@@ -8,10 +8,7 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-m
 sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" $(find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js")
 
 
-# 修改版本为编译日期
-date_version=$(date +"%y.%m.%d")
-orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/emortal/default-settings/files/99-default-settings-chinese
+
 
 
 # Add the default password for the 'root' user（Change the empty password to 'password'）
@@ -29,6 +26,16 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	#修改WIFI密码
 	sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
 
+	# 修改版本为编译日期
+	date_version=$(date +"%y.%m.%d")
+	orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/emortal/default-settings/files/99-default-settings-chinese
+	#修复软件源的问题
+	#sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
+	
+	# 添加两行代码到 exit 0 前面
+	sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
+
 fi
 
 
@@ -39,11 +46,7 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
 #修改默认主机名
 sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 
-#修复软件源的问题
-#sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
 
-# 添加两行代码到 exit 0 前面
-sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
 
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
