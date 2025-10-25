@@ -17,13 +17,21 @@ sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/emortal/def
 # Add the default password for the 'root' user（Change the empty password to 'password'）
 sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7:::/g' package/base-files/files/etc/shadow
 
-WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
-#修改WIFI名称
-sed -i "s/ImmortalWrt/$WRT_SSID/g" $WIFI_FILE
-#修改WIFI加密
-sed -i "s/encryption=.*/encryption='psk2+ccmp'/g" $WIFI_FILE
-#修改WIFI密码
-sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
+
+#根据源码来修改
+if [[ $WRT_URL !== *"lede"* ]]; then
+	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
+	WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
+	#修改WIFI名称
+	sed -i "s/ImmortalWrt/$WRT_SSID/g" $WIFI_FILE
+	#修改WIFI加密
+	sed -i "s/encryption=.*/encryption='psk2+ccmp'/g" $WIFI_FILE
+	#修改WIFI密码
+	sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
+
+fi
+
+
 
 CFG_FILE="./package/base-files/files/bin/config_generate"
 #修改默认IP地址
@@ -67,12 +75,6 @@ fi
 #添加第三方软件源
 sed -i "s/option check_signature/# option check_signature/g" package/system/opkg/Makefile
 echo src/gz openwrt_kiddin9 https://dl.openwrt.ai/latest/packages/aarch64_cortex-a53/kiddin9 >> ./package/system/opkg/files/customfeeds.conf
-
-#添加Kwrt软件源
-#git clone --depth 1 https://github.com/destan19/OpenAppFilter.git  package/oaf
-#git clone --depth 1 https://github.com/kiddin9/kwrt-packages.git package/kwrt-packages
-#mv package/kwrt-packages/luci-app-pushbot package/luci-app-pushbot
-#rm -rf package/kwrt-packages
 
 
 #开机启动文件rc.local替换
