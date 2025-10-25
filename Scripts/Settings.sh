@@ -40,7 +40,7 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
 sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 
 #修复软件源的问题
-sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
+#sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
 
 # 添加两行代码到 exit 0 前面
 sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
