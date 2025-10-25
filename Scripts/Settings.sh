@@ -42,7 +42,8 @@ if [ -n "$WRT_PACKAGE" ]; then
 	echo -e "$WRT_PACKAGE" >> ./.config
 fi
 
-
+sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
+sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 
 #根据源码来修改
 if [[ $WRT_URL == *"lede"* ]]; then
@@ -59,8 +60,7 @@ if [[ $WRT_URL == *"lede"* ]]; then
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/lean/default-settings/files/zzz-default-settings
 	#添加软件源
-	sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-	sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
+
 
 fi
 
