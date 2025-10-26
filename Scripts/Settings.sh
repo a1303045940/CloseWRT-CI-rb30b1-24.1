@@ -29,7 +29,7 @@ if [[ $WRT_REPO != *"lede"* ]]; then
 	# 修改版本为编译日期
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	sed -i '/^exit 0$/i sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/emortal/default-settings/files/99-default-settings-chinese
+	sed -i '/^exit 0$/i sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
 	#修复软件源的问题
 	
 	# 添加两行代码到 exit 0 前面
