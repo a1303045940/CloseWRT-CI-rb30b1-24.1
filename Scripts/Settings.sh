@@ -27,10 +27,12 @@ if [[ $WRT_REPO != *"lede"* ]]; then
 	sed -i "/set wireless.default_\${dev}.encryption='psk2+ccmp'/a \\\t\t\t\t\t\set wireless.default_\${dev}.key='$WRT_WORD'" $WIFI_FILE
 
 	# 修改版本为编译日期
+	
 	date_version=$(date +"%y.%m.%d")
-	orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	sed -i '/^exit 0$/i sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
-	#修复软件源的问题
+	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
+	if [ -n "$orig_version" ]; then
+	  sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	fi	
 	
 	# 添加两行代码到 exit 0 前面
 	sed -i '/^exit 0$/i sed -i "s,mt7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
@@ -82,6 +84,14 @@ if [[ $WRT_REPO == *"lede"* ]]; then
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
+	
+	date_version=$(date +"%y.%m.%d")
+	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
+	if [ -n "$orig_version" ]; then
+	  sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	fi
+
+	
 	
 	#修改luc显示版本改成系统版本
 	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
