@@ -99,12 +99,12 @@ if [[ $WRT_REPO == *"lede"* ]]; then
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
+
+	# 替换 2.4G 的 .ssid
+	sed -i '/band="2g"/, /.*ssid=.*/ s/\.ssid=.*/.ssid=Your-OpenWrt-2.4G/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
 	
-	# 修改 2.4GHz Radio 的默认SSID
-	sed -i '/band="2g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-2.4G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
-	
-	# 修改 5GHz Radio 的默认SSID
-	sed -i '/band="5g"/,/${.*ssid=.*/s/\.ssid=.*/\.ssid=Your-OpenWrt-5G/}' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
+	# 替换 5G 的 .ssid
+	sed -i '/band="5g"/, /.*ssid=.*/ s/\.ssid=.*/.ssid=Your-OpenWrt-5G/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
 
 fi
 
