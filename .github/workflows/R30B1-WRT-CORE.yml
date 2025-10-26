@@ -199,7 +199,7 @@ jobs:
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt >> .config
           else
             find ./defconfig -type f -iname "*$WRT_CONFIG*" -exec cat {} + | sort | uniq > .config
-            $GITHUB_WORKSPACE/Scripts/Settings.sh
+            $GITHUB_WORKSPACE/Scripts/Settings-lede.sh
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
           make defconfig -j$(nproc) && make clean -j$(nproc)
