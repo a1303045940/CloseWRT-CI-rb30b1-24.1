@@ -16,7 +16,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 
 
 #根据源码来修改
-if [[ $REPO_URL != *"lede"* ]]; then
+if [[ $WRT_REPO != *"lede"* ]]; then
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 	#修改WIFI名称
@@ -67,7 +67,7 @@ sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf
 sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 
 #根据源码来修改
-if [[ $REPO_URL == *"lede"* ]]; then
+if [[ $WRT_REPO == *"lede"* ]]; then
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	#修改默认时间格式
 	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
