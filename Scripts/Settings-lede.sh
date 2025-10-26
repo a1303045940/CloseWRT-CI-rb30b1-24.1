@@ -57,12 +57,6 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
-	
-	date_version=$(date +"%y.%m.%d")
-	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
-	if [ -n "$orig_version" ]; then
-	  sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
-	fi
 
 	#修改luc显示版本改成系统版本
 	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
