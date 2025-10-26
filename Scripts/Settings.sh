@@ -86,7 +86,7 @@ if [[ $WRT_URL == *"lede"* ]]; then
 	
 	#修改luc显示版本改成系统版本
 	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
-	
+
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
