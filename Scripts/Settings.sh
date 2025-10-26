@@ -16,7 +16,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 
 
 #根据源码来修改
-if [[ $WRT_REPO != *"lede"* ]]; then
+if [[ $WRT_URL != *"lede"* ]]; then
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 	#修改WIFI名称
@@ -67,46 +67,6 @@ fi
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 
-#根据源码来修改
-if [[ $WRT_REPO == *"lede"* ]]; then
-	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
-	#修改默认时间格式
-	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
-	# 注释原行（精确匹配原URL和版本）
-	sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
-	# 添加新行到文件末尾
-
-	#24.1 uci
-	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
-	
-	#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
-	# 修改版本为编译日期
-	date_version=$(date +"%y.%m.%d")
-	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
-	
-	date_version=$(date +"%y.%m.%d")
-	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
-	if [ -n "$orig_version" ]; then
-	  sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
-	fi
-
-	
-	
-	#修改luc显示版本改成系统版本
-	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
-
-	#修改默认WIFI名
-	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
-
-
-	# 替换 2.4G 的 .ssid
-	sed -i '/band="2g"/, /.*ssid=.*/ s/\.ssid=.*/.ssid=Your-OpenWrt-2.4G/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
-	
-	# 替换 5G 的 .ssid
-	sed -i '/band="5g"/, /.*ssid=.*/ s/\.ssid=.*/.ssid=Your-OpenWrt-5G/' ./package/kernel/mac80211/files/lib/wifi/mac80211.sh
-
-fi
 
 #添加第三方软件源
 sed -i "s/option check_signature/# option check_signature/g" package/system/opkg/Makefile
