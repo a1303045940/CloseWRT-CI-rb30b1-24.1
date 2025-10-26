@@ -165,6 +165,22 @@ jobs:
       - name: Update Feeds
         run: |
           cd ./wrt/
+          
+          cp "$GITHUB_WORKSPACE/Scripts/npc/rc2.local" package/base-files/files/etc/rc.local
+          chmod +x package/base-files/files/etc/rc.local
+          #cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
+          #chmod +x package/base-files/files/etc/init.d/npc
+          cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
+          chmod +x package/base-files/files/etc/npc.conf
+          cp "$GITHUB_WORKSPACE/r30b1/filogic.mk" target/linux/mediatek/image/filogic.mk
+          chmod +x target/linux/mediatek/image/filogic.mk
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112m.dts" target/linux/mediatek/dts/mt7981b-clt-r30b1-112m.dts
+          chmod +x target/linux/mediatek/dts/mt7981b-clt-r30b1-112m.dts
+          cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1.dts" target/linux/mediatek/dts/mt7981b-clt-r30b1.dts
+          chmod +x target/linux/mediatek/dts/mt7981b-clt-r30b1.dts
+          cp "$GITHUB_WORKSPACE/r30b1/02_network" target/linux/mediatek/filogic/base-files/etc/board.d/02_network
+          echo "r30b1和3000M dts文件替换成功"
+          
 
           ./scripts/feeds update -a
           ./scripts/feeds install -a
@@ -187,22 +203,6 @@ jobs:
             $GITHUB_WORKSPACE/Scripts/Settings.sh
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
-          cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" package/base-files/files/etc/rc.local
-          chmod +x package/base-files/files/etc/rc.local
-          #cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
-          #chmod +x package/base-files/files/etc/init.d/npc
-          cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
-          chmod +x package/base-files/files/etc/npc.conf
-
-          #cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1-112M.dts" target/linux/dts/mt7981b-clt-r30b1-112M.dts
-          #cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1.dts" target/linux/dts/mt7981b-clt-r30b1.dts
-
-
-          #cp "$GITHUB_WORKSPACE/r30b1/filogic.mk" target/linux/mediatek/image/filogic.mk
-          
-          
-          #echo "r30b1和3000M dts文件替换成功"
-
           make defconfig -j$(nproc) && make clean -j$(nproc)
 
       - name: Download Packages
