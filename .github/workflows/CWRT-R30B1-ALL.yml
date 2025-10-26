@@ -52,7 +52,7 @@ jobs:
           - {SOURCE: "coolsnowwolf/lede", BRANCH: "master"}
 
     #调用公用编译核心WRT-CORE.yml
-    uses: ./.github/workflows/Lede-WRT-CORE.yml
+    uses: ./.github/workflows/R30B1-WRT-CORE.yml
     with:
       #编译配置
       WRT_CONFIG: ${{matrix.CONFIG}}
