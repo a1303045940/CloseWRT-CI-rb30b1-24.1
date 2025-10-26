@@ -180,6 +180,13 @@ jobs:
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
 
+      - name: Download Packages
+        if: env.WRT_TEST != 'true'
+        run: |
+          cd ./wrt/
+
+          make download -j$(nproc)
+
       - name: Update Feeds
         run: |
           cd ./wrt/
@@ -206,12 +213,7 @@ jobs:
           ./scripts/feeds install -a
           
 
-      - name: Download Packages
-        if: env.WRT_TEST != 'true'
-        run: |
-          cd ./wrt/
 
-          make download -j$(nproc)
 
 
           
