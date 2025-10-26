@@ -45,12 +45,12 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	#修改默认时间格式
 	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
+	
 	# 注释原行（精确匹配原URL和版本）
-	sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
+	#sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
 	# 添加新行到文件末尾
-
 	#24.1 uci
-	echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+	#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 	
 	#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
 	# 修改版本为编译日期
