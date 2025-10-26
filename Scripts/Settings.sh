@@ -31,7 +31,7 @@ if [[ $WRT_REPO != *"lede"* ]]; then
 	orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz/g" package/emortal/default-settings/files/99-default-settings-chinese
 	#修复软件源的问题
-	#sed -i "s,mt7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
+	sed -i "s,mt7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf
 	
 	# 添加两行代码到 exit 0 前面
 	sed -i '/^exit 0$/i sed -i "s,7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
