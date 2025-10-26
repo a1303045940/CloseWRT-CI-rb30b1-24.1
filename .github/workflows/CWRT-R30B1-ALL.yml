@@ -47,21 +47,17 @@ jobs:
       fail-fast: false
       #max-parallel: 4
       matrix:
-        CONFIG: [MT7981]
+        CONFIG: [filogic]
         REPO_INFO:
-          #- {SOURCE: "1303045940/immortalwrt-mt798x-6.6", BRANCH: "2410"}
           - {SOURCE: "coolsnowwolf/lede", BRANCH: "master"}
-          #- {SOURCE: "padavanonly/immortalwrt-mt798x-24.10", BRANCH: "openwrt-24.10-6.6"}
-          #- {SOURCE: "dailook/immortalwrt-mt798x-23.05", BRANCH: "openwrt-23.05"}
-          #- {SOURCE: "NekokeCore/immortalwrt-mt798x-24.10", BRANCH: "openwrt-24.10"}
 
     #调用公用编译核心WRT-CORE.yml
-    uses: ./.github/workflows/WRT-CORE.yml
+    uses: ./.github/workflows/Lede-WRT-CORE.yml
     with:
       #编译配置
       WRT_CONFIG: ${{matrix.CONFIG}}
       #默认主题
-      WRT_THEME: argon
+      WRT_THEME: design
       #默认主机名
       WRT_NAME: Openwrt
       #默认WIFI名称
