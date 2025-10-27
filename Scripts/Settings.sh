@@ -31,7 +31,8 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 	date_version=$(date +"%y.%m.%d")
 	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
 	if [ -n "$orig_version" ]; then
-	  sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	  #sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	  sed -i '/^exit 0$/i sed -i "s,${orig_version},R${date_version} by vx:Mr___zjz  /,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
 	fi	
 	
 	# 添加两行代码到 exit 0 前面
