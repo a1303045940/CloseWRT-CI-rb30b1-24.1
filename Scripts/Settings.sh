@@ -16,7 +16,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 
 
 #根据源码来修改
-if [[ $WRT_URL != *"lede"* ]]; then
+#if [[ $WRT_URL != *"lede"* ]]; then
 
 	WIFI_FILE="./package/mtk/applications/mtwifi-cfg/files/mtwifi.sh"
 	#修改WIFI名称
@@ -41,7 +41,7 @@ if [[ $WRT_URL != *"lede"* ]]; then
 	#sed -i "s,led-failsafe = &power_led,led-failsafe = &system_led,g" target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-clt-r30b1-base.dtsi
 
 
-fi
+#fi
 
 
 
