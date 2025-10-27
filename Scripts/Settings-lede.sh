@@ -45,6 +45,9 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
 	#修改默认时间格式
 	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
+
+	#修改luc显示版本改成系统版本
+	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
 	
 	# 注释原行（精确匹配原URL和版本）
 	#sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
@@ -61,9 +64,6 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	#sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
 	
 	sed -i "s/${orig_version}/ ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
-
-	#修改luc显示版本改成系统版本
-	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
 
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
