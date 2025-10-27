@@ -60,7 +60,8 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	#date_version=$(date +"%y.%m.%d")
 	date_version=$(date +"%Y年%m月%d日")
 	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	VERSION=$(grep "^PRETTY_NAME=" /etc/os-release | cut -d'=' -f2 | tr -d '"')
+	#VERSION=$(grep "^PRETTY_NAME=" /etc/os-release | cut -d'=' -f2 | tr -d '"')
+	VERSION=$(grep "PRETTY_NAME=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	#sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
 	
 	sed -i "s/${orig_version}/ ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
