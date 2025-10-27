@@ -28,15 +28,24 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 
 	# 修改版本为编译日期
 	
-	date_version=$(date +"%y.%m.%d")
-	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
-	if [ -n "$orig_version" ]; then
-	    # 使用临时变量来构建 sed 命令
-	    new_version="R${date_version} by vx:Mr___zjz"
-	    # 在 exit 0 前面插入一行新的 sed 命令
-	    sed -i "/^exit 0$/i sed -i 's,${orig_version},${new_version},g' /etc/opkg/distfeeds.conf" \
-	        package/emortal/default-settings/files/99-default-settings-chinese
-	fi
+#	date_version=$(date +"%y.%m.%d")
+#	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
+#	if [ -n "$orig_version" ]; then
+#	    # 使用临时变量来构建 sed 命令
+#	    new_version="R${date_version} by vx:Mr___zjz"
+#	    # 在 exit 0 前面插入一行新的 sed 命令
+#	    sed -i "/^exit 0$/i sed -i 's,${orig_version},${new_version},g' /etc/opkg/distfeeds.conf" \
+#	        package/emortal/default-settings/files/99-default-settings-chinese
+#	fi
+	
+	date_version=$(date +"%Y年%m月%d日")
+	orig_version=$(cat "package/emortal/default-settings/files/99-default-settings-chinese" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+	VERSION=$(grep "^PRETTY_NAME=" /etc/os-release | cut -d'=' -f2 | tr -d '"')
+	#sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	
+	sed -i "s/${orig_version}/ ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+
+
 	
 	# 添加两行代码到 exit 0 前面
 	sed -i '/^exit 0$/i sed -i "s,mt7981/packages,filogic/packages,g" /etc/opkg/distfeeds.conf' package/emortal/default-settings/files/99-default-settings-chinese
