@@ -56,17 +56,22 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 	
 	#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
-	# 修改版本为编译日期
-	#date_version=$(date +"%y.%m.%d")
+	
+	# 获取编译日期
 	date_version=$(date +"%Y年%m月%d日")
-	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	
-	VERSION-NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
+	# 获取原始版本
+	#orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+	# 获取 VERSION 信息
+	VERSION_NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	VERSION=$(grep "DISTRIB_RELEASE=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
-	
-	#sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
-	
-	sed -i "s/${VERSION-NAME}/ /${VERSION}/  ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
+	# 生成新版本字符串
+	new_version=" ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz"
+
+	# 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
+	sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/zzz-default-settings
+
+
+
 
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
