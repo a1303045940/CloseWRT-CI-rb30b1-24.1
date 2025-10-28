@@ -76,32 +76,8 @@ new_version="${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
 sed -i "s|${orig_version}|${"openwrt 24.10.3   by 微信:Mr___zjz 编译日期：${date_version}"}|g" package/lean/default-settings/files/zzz-default-settings
 
 
-
-
 #修改默认WIFI名
 #sed -i "s/\.ssid=.*/\.ssid=Openwrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
-
-# 修改wifi名称脚本
-FILE2="/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
-
-：添加 get_ssid_by_devidx 函数
-sed -i '/^detect_mac80211() {/a\
-\	get_ssid_by_devidx() {\
-\		case "$1" in\
-\			0)   echo "Openwrt-2.4G" ;;\
-\			1)   echo "Openwrt-5G" ;;\
-\			*)   echo "Openwrt" ;;\
-\		esac\
-\	}' "$FILE2"
-
-# 步骤 3：替换 SSID 为动态值
-sed -i 's/set wireless\.default_radio${devidx}\.ssid=Openwrt/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
-
-# 步骤 4：在 SSID 设置前添加获取代码
-sed -i '/set wireless.default_radio${devidx}.ssid=\${ssid}/i\
-\		ssid=$(get_ssid_by_devidx "$devidx")' "$FILE2"
-
-#fi
 
 #添加第三方软件源
 sed -i "s/option check_signature/# option check_signature/g" package/system/opkg/Makefile
