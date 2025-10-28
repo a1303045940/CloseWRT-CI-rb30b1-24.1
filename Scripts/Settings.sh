@@ -49,7 +49,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 	VERSION=$(grep "PRETTY_NAME=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	#sed -i "s/openwrt 24.10.3 /R${date_version} by vx:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
 	
-	#sed -i "s/${orig_version}/ ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/emortal/default-settings/files/99-default-settings-chinese
+	sed -i '/^exit 0$/i sed -i "s/${orig_version}/ ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g package/base-files/files/usr/lib/os-release" package/emortal/default-settings/files/99-default-settings-chinese
 
 
 	
