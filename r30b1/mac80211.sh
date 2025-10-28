@@ -167,6 +167,23 @@ detect_mac80211() {
 			dev_id="set wireless.radio${devidx}.macaddr=$(cat /sys/class/ieee80211/${dev}/macaddress)"
 		fi
 
+		# ====================================
+		# 根据 devidx 判断设置 SSID
+		# ====================================
+		if [ "$devidx" = "0" ]; then
+			# devidx=0 时设置为 2.4G WiFi
+			ssid="Openwrt-2.4G"
+			echo -e "${GREEN}[devidx=$devidx] 设置 SSID 为：$ssid (2.4G)${NC}"
+		elif [ "$devidx" = "1" ]; then
+			# devidx=1 时设置为 5G WiFi
+			ssid="Openwrt-5G"
+			echo -e "${GREEN}[devidx=$devidx] 设置 SSID 为：$ssid (5G)${NC}"
+		else
+			# 其他情况
+			ssid="Openwrt"
+			echo -e "${YELLOW}[devidx=$devidx] 设置 SSID 为：$ssid (默认)${NC}"
+		fi
+
 		uci -q batch <<-EOF
 			set wireless.radio${devidx}=wifi-device
 			set wireless.radio${devidx}.type=mac80211
@@ -181,7 +198,7 @@ detect_mac80211() {
 			set wireless.default_radio${devidx}.device=radio${devidx}
 			set wireless.default_radio${devidx}.network=lan
 			set wireless.default_radio${devidx}.mode=ap
-			set wireless.default_radio${devidx}.ssid=LEDE
+			set wireless.default_radio${devidx}.ssid=${ssid}
 			set wireless.default_radio${devidx}.encryption=none
 EOF
 		uci -q commit wireless
