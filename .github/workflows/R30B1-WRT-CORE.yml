@@ -178,6 +178,8 @@ jobs:
           cp "$GITHUB_WORKSPACE/r30b1/mt7981b-clt-r30b1.dts" target/linux/mediatek/dts/mt7981b-clt-r30b1.dts
           chmod +x target/linux/mediatek/dts/mt7981b-clt-r30b1.dts
           cp "$GITHUB_WORKSPACE/r30b1/02_network" target/linux/mediatek/filogic/base-files/etc/board.d/02_network
+          # 修改wifi名称脚本
+          cp "$GITHUB_WORKSPACE/r30b1/mac80211.sh" package/kernel/mac80211/files/lib/wifi/mac80211.sh
           echo "r30b1和3000M dts文件替换成功"
           
 
