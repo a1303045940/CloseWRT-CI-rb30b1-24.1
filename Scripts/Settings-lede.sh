@@ -56,6 +56,8 @@ sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-
 #echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 
 #echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
+#修改默认WIFI名
+#sed -i "s/\.ssid=.*/\.ssid=Openwrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
 # 获取编译日期
 date_version=$(date +"%Y年%m月%d日")
@@ -76,8 +78,7 @@ sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/
 
 
 
-#修改默认WIFI名
-#sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
+
 
 # 修改wifi名称脚本
 FILE2="/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
@@ -93,7 +94,7 @@ sed -i '/^detect_mac80211() {/a\
 \	}' "$FILE2"
 
 # 步骤 3：替换 SSID 为动态值
-sed -i 's/set wireless\.default_radio${devidx}\.ssid=LEDE/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
+sed -i 's/set wireless\.default_radio${devidx}\.ssid=Openwrt/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
 
 # 步骤 4：在 SSID 设置前添加获取代码
 sed -i '/set wireless.default_radio${devidx}.ssid=\${ssid}/i\
