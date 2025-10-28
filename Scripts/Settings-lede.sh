@@ -79,7 +79,8 @@ sed -i "s|${orig_version}|${"openwrt 24.10.3   by 微信:Mr___zjz 编译日期�
 
 
 
-
+#修改默认WIFI名
+#sed -i "s/\.ssid=.*/\.ssid=Openwrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
 # 修改wifi名称脚本
 FILE2="/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
