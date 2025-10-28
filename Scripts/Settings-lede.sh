@@ -90,7 +90,7 @@ sed -i '/^detect_mac80211() {/a\
 \			1)   echo "Openwrt-5G" ;;\
 \			*)   echo "Openwrt" ;;\
 \		esac\
-\	}' "$FILE"
+\	}' "$FILE2"
 
 # 步骤 3：替换 SSID 为动态值
 sed -i 's/set wireless\.default_radio${devidx}\.ssid=LEDE/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
