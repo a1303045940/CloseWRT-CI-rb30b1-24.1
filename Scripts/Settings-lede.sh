@@ -80,7 +80,7 @@ sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/
 sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
 # 修改wifi名称脚本
-FILE2="./package/kernel/mac80211/files/lib/wifi/mac80211.sh"
+FILE2="/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
 
 ：添加 get_ssid_by_devidx 函数
 sed -i '/^detect_mac80211() {/a\
