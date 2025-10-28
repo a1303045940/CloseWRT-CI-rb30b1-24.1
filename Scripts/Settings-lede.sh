@@ -77,7 +77,7 @@ sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/
 
 
 #修改默认WIFI名
-sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
+#sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
 # 修改wifi名称脚本
 FILE2="/package/kernel/mac80211/files/lib/wifi/mac80211.sh"
