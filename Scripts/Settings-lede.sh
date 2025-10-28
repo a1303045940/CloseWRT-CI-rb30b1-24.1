@@ -66,7 +66,7 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	
 	#sed -i "s/${orig_version}/R${date_version} by vx:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
 	
-	sed -i "s/${orig_version}/ ${VERSION-NAME}  ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
+	sed -i "s/${VERSION-NAME}/ /${VERSION}/  ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz  /g" package/lean/default-settings/files/zzz-default-settings
 
 	#修改默认WIFI名
 	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
