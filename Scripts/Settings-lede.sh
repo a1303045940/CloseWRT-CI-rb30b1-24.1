@@ -65,7 +65,7 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	VERSION_NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	VERSION=$(grep "DISTRIB_RELEASE=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	# 生成新版本字符串
-	new_version=" ${VERSION} 编译日期：${date_version}  by 微信:Mr___zjz"
+	new_version="${VERSION_NAME}  ${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
 
 	# 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
 	sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/zzz-default-settings
