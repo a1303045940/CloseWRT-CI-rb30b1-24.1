@@ -60,7 +60,7 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 	# 获取编译日期
 	date_version=$(date +"%Y年%m月%d日")
 	# 获取原始版本
-	#orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
 	# 获取 VERSION 信息
 	VERSION_NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 	VERSION=$(grep "DISTRIB_RELEASE=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
