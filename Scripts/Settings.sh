@@ -31,7 +31,7 @@ sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.::0:99999:7
 	# 修改版本为编译日期
 
 
-	sed -i 's/OPENWRT_RELEASE=.*/OPENWRT_RELEASE="Openwrt 24.10  by 微信:Mr___zjz 编译日期：${date_version}"/g' package/base-files/files/usr/lib/os-release
+	#sed -i 's/OPENWRT_RELEASE=.*/OPENWRT_RELEASE="Openwrt 24.10  by 微信:Mr___zjz 编译日期：${date_version}"/g' package/base-files/files/usr/lib/os-release
 	
 #	date_version=$(date +"%y.%m.%d")
 #	orig_version=$(grep "DISTRIB_REVISION=" package/emortal/default-settings/files/99-default-settings-chinese | awk -F"'" '{print $2}')
