@@ -42,59 +42,59 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 
 #根据源码来修改
 #if [[ $WRT_REPO == *"lede"* ]]; then
-	LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
-	#修改默认时间格式
-	sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
+LEDE_FILE=$(find ./package/lean/autocore/ -type f -name "index.htm")
+#修改默认时间格式
+sed -i 's/os.date()/os.date("%Y-%m-%d %H:%M 星期%w")/g' $LEDE_FILE
 
-	#修改luc显示版本改成系统版本
-	sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
-	
-	# 注释原行（精确匹配原URL和版本）
-	#sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
-	# 添加新行到文件末尾
-	#24.1 uci
-	#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
-	
-	#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
-	
-	# 获取编译日期
-	date_version=$(date +"%Y年%m月%d日")
-	# 获取原始版本
-	orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
-	# 获取 VERSION 信息
-	VERSION_NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
-	VERSION=$(grep "DISTRIB_RELEASE=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
-	# 生成新版本字符串
-	new_version="${VERSION_NAME}  ${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
+#修改luc显示版本改成系统版本
+sed -i "735s/<%=pcdata(ver\.luciname)%> (<%=pcdata(ver\.luciversion)%>)/openwrt-24.10.3/" package/lean/autocore/files/arm/index.htm
 
-	# 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
-	sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/zzz-default-settings
+# 注释原行（精确匹配原URL和版本）
+#sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
+# 添加新行到文件末尾
+#24.1 uci
+#echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
 
+#echo "src-git luci https://github.com/coolsnowwolf/luci.git" >> "feeds.conf.default"
 
+# 获取编译日期
+date_version=$(date +"%Y年%m月%d日")
+# 获取原始版本
+orig_version=$(cat "package/lean/default-settings/files/zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')
+# 获取 VERSION 信息
+VERSION_NAME=$(grep "DISTRIB_ID=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
+VERSION=$(grep "DISTRIB_RELEASE=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
+# 生成新版本字符串
+new_version="${VERSION_NAME}  ${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
+
+# 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
+sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/zzz-default-settings
 
 
-	#修改默认WIFI名
-	sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
 
-	# 修改wifi名称脚本
-	FILE2="./package/kernel/mac80211/files/lib/wifi/mac80211.sh"
-	
-	：添加 get_ssid_by_devidx 函数
-	sed -i '/^detect_mac80211() {/a\
-	\	get_ssid_by_devidx() {\
-	\		case "$1" in\
-	\			0)   echo "Openwrt-2.4G" ;;\
-	\			1)   echo "Openwrt-5G" ;;\
-	\			*)   echo "Openwrt" ;;\
-	\		esac\
-	\	}' "$FILE"
-	
-	# 步骤 3：替换 SSID 为动态值
-	sed -i 's/set wireless\.default_radio${devidx}\.ssid=LEDE/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
-	
-	# 步骤 4：在 SSID 设置前添加获取代码
-	sed -i '/set wireless.default_radio${devidx}.ssid=\${ssid}/i\
-	\		ssid=$(get_ssid_by_devidx "$devidx")' "$FILE2"
+
+#修改默认WIFI名
+sed -i "s/\.ssid=.*/\.ssid=OpenWrt/g" $(find ./package/kernel/mac80211/ ./package/network/config/ -type f -name "mac80211.*")
+
+# 修改wifi名称脚本
+FILE2="./package/kernel/mac80211/files/lib/wifi/mac80211.sh"
+
+：添加 get_ssid_by_devidx 函数
+sed -i '/^detect_mac80211() {/a\
+\	get_ssid_by_devidx() {\
+\		case "$1" in\
+\			0)   echo "Openwrt-2.4G" ;;\
+\			1)   echo "Openwrt-5G" ;;\
+\			*)   echo "Openwrt" ;;\
+\		esac\
+\	}' "$FILE"
+
+# 步骤 3：替换 SSID 为动态值
+sed -i 's/set wireless\.default_radio${devidx}\.ssid=LEDE/set wireless.default_radio${devidx}.ssid=${ssid}/g' "$FILE2"
+
+# 步骤 4：在 SSID 设置前添加获取代码
+sed -i '/set wireless.default_radio${devidx}.ssid=\${ssid}/i\
+\		ssid=$(get_ssid_by_devidx "$devidx")' "$FILE2"
 
 #fi
 
