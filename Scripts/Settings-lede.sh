@@ -78,7 +78,7 @@ VERSION=$(grep "PRETTY_NAME=" package/base-files/files/usr/lib/os-release | cut 
 #new_version="${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
 # 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
 new_version="24.10.3   by 微信:Mr___zjz 编译日期：${date_version}"
-sed -i "s/LEDE/openwrt/g" default-settings/files/zzz-default-settings
+sed -i "s/LEDE/openwrt/g" package/lean/default-settings/files/zzz-default-settings
 sed -i "s|${orig_version}|${new_version}|g" package/lean/default-settings/files/zzz-default-settings
 
 #修改默认WIFI名
