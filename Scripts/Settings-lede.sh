@@ -75,7 +75,7 @@ VERSION_NAME=$(grep "ID=" package/base-files/files/usr/lib/os-release | cut -d'=
 VERSION=$(grep "PRETTY_NAME=" package/base-files/files/usr/lib/os-release | cut -d'=' -f2)
 # 生成新版本字符串
 #new_version="${VERSION_NAME}  ${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
-#new_version="${VERSION}   by 微信:Mr___zjz 编译日期：${date_version}"
+#new_version="${VERSION}    by 微信:Mr___zjz 编译日期：${date_version}"
 # 使用 sed 替换（使用 | 作为分隔符避免斜杠冲突）
 new_version="24.10.3   by 微信:Mr___zjz 编译日期：${date_version}"
 #系统名称改成openwrt
