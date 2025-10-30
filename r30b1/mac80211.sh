@@ -194,8 +194,8 @@ detect_mac80211() {
 			set wireless.default_radio${devidx}.mode=ap
 			set wireless.default_radio${devidx}.ssid=${ssid}
 			#set wireless.default_radio${devidx}.encryption=none
-			set wireless.default_radio0.encryption=psk2          # ✅ 添加
-			set wireless.default_radio0.key=password             # ✅ 添加
+			set wireless.default_radio${devidx}.encryption=psk2          # ✅ 添加
+			set wireless.default_radio${devidx}.key=password             # ✅ 添加
 EOF
 		uci -q commit wireless
 
