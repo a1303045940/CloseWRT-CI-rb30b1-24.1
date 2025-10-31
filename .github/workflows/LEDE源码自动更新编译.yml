@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: LEDE Update Checker
+name: LEDE源码自动更新编译
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
