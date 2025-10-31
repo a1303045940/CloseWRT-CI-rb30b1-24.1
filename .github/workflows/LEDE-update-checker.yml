@@ -49,7 +49,7 @@ jobs:
       if: steps.cacheHash.outputs.cache-hit != 'true'
       uses: benc-uk/workflow-dispatch@v1
       with:
-        workflow: LEDE Builder
+        workflow: CWRT-R30B1-ALL
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
