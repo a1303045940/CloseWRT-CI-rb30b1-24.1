@@ -257,27 +257,20 @@ jobs:
     
           make defconfig -j$(nproc) && make clean -j$(nproc)
           
-      - name: Prefetch ebtables source
+    
+      - name: Download Packages
+        if: env.WRT_TEST != 'true'
         run: |
-          mkdir -p /mnt/build_wrt/dl
-          curl -fSL --retry 5 --retry-delay 3 -o /mnt/build_wrt/dl/ebtables-2018.06.27~48cff25d.tar.zst \
-            https://mirrors.kernel.org/pub/software/network/ebtables/ebtables-2018.06.27~48cff25d.tar.zst || \
-          curl -fSL --retry 5 --retry-delay 3 -o /mnt/build_wrt/dl/ebtables-2018.06.27~48cff25d.tar.zst \
-            https://github.com/ebtables/ebtables/archive/48cff25d.tar.gz
-          
-            - name: Download Packages
-              if: env.WRT_TEST != 'true'
-              run: |
-                cd ./wrt/
-          
-                make download -j$(nproc)
-          
-            - name: Compile Firmware
-              if: env.WRT_TEST != 'true'
-              run: |
-                cd ./wrt/
-          
-                make -j$(nproc) || make -j$(nproc) V=s
+          cd ./wrt/
+    
+          make download -j$(nproc)
+    
+      - name: Compile Firmware
+        if: env.WRT_TEST != 'true'
+        run: |
+          cd ./wrt/
+    
+          make -j$(nproc) || make -j$(nproc) V=s
     
       - name: Machine Information
         run: |
