@@ -38,6 +38,8 @@ CONFIG_PACKAGE_luci-app-ssr-plus=y
 #ssr依赖
 CONFIG_PACKAGE_kmod-nft-compat=y
 
+#easymesh插件依赖
+CONFIG_PACKAGE_kmod-batman-adv=y
 
 #删除插件
 
@@ -123,6 +125,7 @@ CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Hysteria=n
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Server is not set
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox=n
+
 
 
 
