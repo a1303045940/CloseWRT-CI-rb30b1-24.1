@@ -78,7 +78,7 @@ jobs:
             zlib1g zlib1g-dev \
             libncurses6 libncursesw6 libncurses5-dev libncursesw5-dev libtinfo-dev libtinfo6 \
             libsqlite3-0 libsqlite3-dev \
-            libffi7 libffi-dev \
+            libffi-dev \
             libssl-dev libssl3 \
             libbz2-1.0 libbz2-dev \
             libreadline-dev libgdbm-dev \
