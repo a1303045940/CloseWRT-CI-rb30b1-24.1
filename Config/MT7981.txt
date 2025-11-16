@@ -34,6 +34,8 @@ CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_mt7981-clt-r30b1=y
 CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_mt7981-clt-r30b1-112m=y
 CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_mt7981-clt-r30b1-112M=y
 
+CONFIG_TARGET_mediatek_filogic_DEVICE_sl_3000-emmc=y
+
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_newland_nl-wr8103=n
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_newland_nl-wr9103=n
 # CONFIG_TARGET_DEVICE_mediatek_mt7981_DEVICE_nokia_ea0326gmp=n
