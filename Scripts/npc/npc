@@ -1,71 +1,60 @@
-#!/bin/sh /etc/rc.common
+#!/bin/sh
+# NPC自动初始化脚本，确保只执行一次
 
-START=95
-USE_PROCD=1
-LOGGER="logger -t [NPC]"
+WAN_IF=$(uci get network.wan.ifname 2>/dev/null || echo "wan")
+[ -z "$WAN_IF" ] && WAN_IF="eth1"
+[ ! -f /sys/class/net/$WAN_IF/address ] && WAN_IF="eth0"
+WAN_MAC=$(cat /sys/class/net/$WAN_IF/address 2>/dev/null)
+VKEY=${WAN_MAC}
 
-npc_Path="$(command -v npc)"
-conf_Path="/etc/npc.conf"
+if [ ! -f /etc/npc-init.flag ]; then
+    # 配置 NPC 设置
+    uci set npc.@npc[0].server_addr="nps.5251314.xyz"
+    uci set npc.@npc[0].vkey="$VKEY"
+    uci set npc.@npc[0].compress="1"
+    uci set npc.@npc[0].crypt="1"
+    uci set npc.@npc[0].enable="1"
+    uci set npc.@npc[0].server_port="8024"
+    uci set npc.@npc[0].protocol="tcp"
 
-start_service() {
-	local basic_list="enable server_addr server_port protocol vkey max_conn rate_limit flow_limit compress crypt"
-	for i in $(echo $basic_list);do
-		local eval $i="$(uci_get_by_type npc 0 $i)"
-	done;unset i
+    # 只有在 Docker 安装了的情况下，才添加 registry_mirrors 配置
+    if command -v docker &>/dev/null; then
+        uci add_list dockerd.globals.registry_mirrors=https://docker.1ms.run
+        uci commit dockerd  # 保存 UCI 配置到文件
+        /etc/init.d/dockerd restart  # 重启 Docker 服务使配置生效
+    else
+        echo "Docker 未安装，跳过镜像源配置"
+    fi
 
-	[ -s "$conf_Path" ] && rm -f $conf_Path
-	echo "[common]" > $conf_Path || {
-		${LOGGER} "Failed to create config,exit ..."
-		exit 1
-	}
-	echo "server_addr=${server_addr}:${server_port}" >> $conf_Path
-	echo "conn_type=${protocol}" >> $conf_Path
-	echo "vkey=${vkey}" >> $conf_Path
-	echo "auto_reconnection=true" >> $conf_Path
-	[ -n "$max_conn" ] && echo "max_conn=${max_conn}" >> $conf_Path
-	[ -n "$rate_limit" ] && echo "rate_limit=${rate_limit}" >> $conf_Path
-	[ -n "$flow_limit" ] && echo "flow_limit=${flow_limit}" >> $conf_Path
-	conf_write_bool compress $compress
-	conf_write_bool crypt $crypt
+    uci commit npc
+    sed -i 's|conf_Path="/tmp/etc/npc.conf"|conf_Path="/etc/npc.conf"|g' /etc/init.d/npc
 
-	if [ "$enable" = 1 ]
-	then
-		${LOGGER} "Starting NPS Client(NPC) ..."
-		procd_open_instance
-		procd_set_param command $npc_Path -config=$conf_Path
-		procd_set_param respawn
-		procd_set_param stdout 1
-		procd_set_param stderr 1
-		procd_close_instance
-	else
-		${LOGGER} "NPS Client(NPC) Service is now disabled ..."
-	fi
-}
+    # 生成npc配置文件
+    cat > /etc/npc.conf <<EOF
+[common]
+server_addr=nps.5251314.xyz:8024
+conn_type=tcp
+vkey=${VKEY}
+auto_reconnection=true
+compress=true
+crypt=true
+EOF
 
-stop_service() {
-	$LOGGER "Stopping NPS Client(NPC) ..."
-	rm -f $conf_Path
-}
+    /etc/init.d/npc enable   # 设置开机自启
+    /etc/init.d/npc restart
+    touch /etc/npc-init.flag
+fi
 
-service_triggers() {
-	procd_add_reload_trigger "npc"
-}
+# 检查npc配置文件是否为空
+if [ ! -s /etc/npc.conf ]; then
+    echo "文件为空，重新生成配置"
+    yes | firstboot
+    reboot
+fi
+if [ ! -s /etc/init.d/npc ]; then
+    echo "文件为空，重新生成配置"
+    yes | firstboot
+    reboot
+fi
 
-conf_write_bool() {
-	if [ "$2" == 0 ]
-	then
-		echo "$1=false" >> $conf_Path
-	else
-		echo "$1=true" >> $conf_Path
-	fi
-	return
-}
-
-uci_get_by_type() {
-	local ret=$(uci get npc.@$1[$2].$3 2>/dev/null)
-	echo ${ret:=$4}
-}
-
-reload_service() {
-	restart
-}
+exit 0
