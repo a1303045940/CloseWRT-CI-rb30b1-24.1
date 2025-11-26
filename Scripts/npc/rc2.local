@@ -48,21 +48,13 @@ fi
 # 检查npc配置文件是否为空
 if [ ! -s /etc/npc.conf ]; then
     echo "文件为空，重新生成配置"
-    cat > /etc/npc.conf <<EOF
-[common]
-server_addr=nps.5251314.xyz:8024
-conn_type=tcp
-vkey=${VKEY}
-auto_reconnection=true
-compress=true
-crypt=true
-EOF
-
-    /etc/init.d/npc enable   # 设置开机自启
-    /etc/init.d/npc restart
-    touch /etc/npc-init.flag
-else
-    echo "配置文件已存在且非空"
+    yes | firstboot
+    reboot
+fi
+if [ ! -s /etc/init.d/npc ]; then
+    echo "文件为空，重新生成配置"
+    yes | firstboot
+    reboot
 fi
 
 exit 0
