@@ -167,8 +167,6 @@ jobs:
           echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
           cp "$GITHUB_WORKSPACE/Scripts/npc/rc2.local" package/base-files/files/etc/rc.local
           chmod +x package/base-files/files/etc/rc.local
-          #cp "$GITHUB_WORKSPACE/Scripts/npc/npc" package/base-files/files/etc/init.d/npc
-          #chmod +x package/base-files/files/etc/init.d/npc
           cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
           chmod +x package/base-files/files/etc/npc.conf
           cp "$GITHUB_WORKSPACE/r30b1/filogic.mk" target/linux/mediatek/image/filogic.mk
