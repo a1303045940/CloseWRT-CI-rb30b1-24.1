@@ -48,7 +48,6 @@
 			partition@0 {
 				label = "bl2";
 				reg = <0x00000 0x0100000>;
-				read-only;
 			};
 
 			partition@100000 {
@@ -59,7 +58,6 @@
 			factory: partition@180000 {
 				label = "factory";
 				reg = <0x180000 0x200000>;
-				read-only;
 
 				nvmem-layout {
 					compatible = "fixed-layout";
@@ -84,7 +82,7 @@
 
 			partition@580000 {
 				label = "ubi";
-				reg = <0x580000 0x7200000>;
+				reg = <0x580000 0x7000000>;
 			};
 		};
 	};
