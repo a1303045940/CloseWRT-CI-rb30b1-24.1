@@ -77,7 +77,7 @@
 			partition@380000 {
 				label = "fip";
 				reg = <0x380000 0x200000>;
-				read-only;
+
 			};
 
 			partition@580000 {
