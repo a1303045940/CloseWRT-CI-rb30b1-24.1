@@ -161,10 +161,17 @@ jobs:
           cd ./wrt/
           
           # 注释原行（精确匹配原URL和版本）
-          sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
+          #sed -i '/src-git luci https:\/\/github.com\/coolsnowwolf\/luci\.git;openwrt-23.05/s/^/#/' "feeds.conf.default"
           # 添加新行到文件末尾
           #24.1 uci
+          #echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+          
+          # 删除所有 luci feed (避免重复定义)
+          sed -i '/^src-git luci/d' "feeds.conf.default"
+          
+          # 添加 luci 24.10 版本
           echo "src-git luci https://github.com/coolsnowwolf/luci.git;openwrt-24.10" >> "feeds.conf.default"
+    
           cp "$GITHUB_WORKSPACE/Scripts/npc/rc2.local" package/base-files/files/etc/rc.local
           chmod +x package/base-files/files/etc/rc.local
           cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
