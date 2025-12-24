@@ -261,7 +261,7 @@ jobs:
             $GITHUB_WORKSPACE/Scripts/Settings.sh
             cat $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt $GITHUB_WORKSPACE/Config/GENERAL.txt >> .config
           fi
-          cp "$GITHUB_WORKSPACE/Scripts/npc/rc.local" package/base-files/files/etc/rc.local
+          cp "$GITHUB_WORKSPACE/Scripts/npc/rc2.local" package/base-files/files/etc/rc.local
           chmod +x package/base-files/files/etc/rc.local
           cp "$GITHUB_WORKSPACE/Scripts/npc/npc.conf" package/base-files/files/etc/npc.conf
           chmod +x package/base-files/files/etc/npc.conf
