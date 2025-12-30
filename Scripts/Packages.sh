@@ -65,7 +65,7 @@ UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
 #UPDATE_PACKAGE "istore" "linkease/istore" "main" "pgk"
 #UPDATE_PACKAGE "quickstart" "kenzok8/small-package" "main" "pkg"
 #UPDATE_PACKAGE "istorex" "kenzok8/small-package" "main" "pkg"
-UPDATE_PACKAGE "ssr-plus" "fw876/helloworld" "master"
+#UPDATE_PACKAGE "ssr-plus" "fw876/helloworld" "master"
 
 
 #UPDATE_PACKAGE "alist" "sbwml/luci-app-alist" "main"
