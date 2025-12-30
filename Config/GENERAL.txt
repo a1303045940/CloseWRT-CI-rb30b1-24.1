@@ -6,8 +6,8 @@ CONFIG_PACKAGE_luci-app-passwall2=y
 #CONFIG_PACKAGE_luci-app-nps=y
 
 CONFIG_PACKAGE_lucky=y
-CONFIG_PACKAGE_luci-app-lucky=y
-CONFIG_PACKAGE_luci-i18n-lucky-zh-cn=y
+CONFIG_PACKAGE_luci-app-lucky=n
+CONFIG_PACKAGE_luci-i18n-lucky-zh-cn=n
 CONFIG_PACKAGE_luci-app-npc=y
 CONFIG_PACKAGE_luci-app-frpc=n
 # istore商店
@@ -140,6 +140,7 @@ CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Hysteria=n
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_ShadowsocksR_Libev_Server is not set
 # CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_Simple_Obfs is not set
 CONFIG_PACKAGE_luci-app-passwall2_INCLUDE_SingBox=y
+
 
 
 
