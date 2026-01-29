@@ -2,7 +2,7 @@
 CONFIG_TARGET_mediatek=y
 CONFIG_TARGET_mediatek_filogic=y
 #设备列表
-CONFIG_TARGET_DEVICE_mediatek_filogic_DEVICE_clx_s20p=y
+CONFIG_TARGET_mediatek_filogic_DEVICE_clx_s20l=y
 #必选组件
 CONFIG_first_card_name="MT7986"
 CONFIG_MTK_CHIP_MT7986=y
